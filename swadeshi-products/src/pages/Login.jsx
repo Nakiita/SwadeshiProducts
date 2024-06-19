@@ -53,7 +53,7 @@ const Login = () => {
              navigate("/admin");
            } else {
              // Redirect to homepage
-             navigate("/homepage");
+             navigate("/");
            }
         }
       })

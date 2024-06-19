@@ -15,6 +15,7 @@ const AdminEditProduct = () => {
             setProductPrice(res.data.product.productPrice)
             setProductDescription(res.data.product.productDescription)
             setProductCategory(res.data.product.productCategory)
+            setProductQuantity(res.data.product.productQuantity)
             setOldImage(res.data.product.productImageUrl)
         })
     }, [id])
@@ -25,6 +26,7 @@ const AdminEditProduct = () => {
     const [productPrice, setProductPrice] = useState('')
     const [productDescription, setProductDescription] = useState('')
     const [productCategory, setProductCategory] = useState('')
+    const [productQuantity, setProductQuantity] = useState('')
     const [oldImage, setOldImage] = useState('')
 
     // make useState for image
@@ -49,6 +51,7 @@ const AdminEditProduct = () => {
         formData.append('productPrice', productPrice)
         formData.append('productDescription', productDescription)
         formData.append('productCategory', productCategory)
+        formData.append('productQuantity', productQuantity)
         formData.append('productImage', productImage)
 
         // make a api call
@@ -57,18 +60,13 @@ const AdminEditProduct = () => {
                 toast.error(res.data.message)
             } else {
                 toast.success(res.data.message)
-                navigate('/admin/dashboard')
+                navigate('/adminDashboard')
             }
         }).catch((err) => {
             console.log(err)
             toast.error('Internal Server Error!')
         })
-
-
-
     }
-
-
     return (
         <>
             <div className='m-4'>
@@ -98,11 +96,11 @@ const AdminEditProduct = () => {
                             <option value="Thanka Paintings">Thanka Paintings</option>
                             <option value="Jwelleries">Jwelleries</option>
                         </select>
-
+                        <label htmlFor="">Quantity</label>
+                        <input value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} type="number" className='form-control mb-2' placeholder='Enter your quantity' />
 
                         <label>Product Image</label>
                         <input onChange={handleImageUpload} type="file" className='form-control' />
-
                         <button onClick={handleSubmit} className='btn btn-primary w-100 mt-2'>Update product</button>
 
                     </form>

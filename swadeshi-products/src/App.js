@@ -11,6 +11,7 @@ import ResetPassword from "./pages/ResetPassword";
 import HomePage from "./pages/user/HomePage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminEditProduct from "./pages/admin/AdminEdit";
+import AdminView from "./pages/admin/AdminView";
 import Sidebar from "./components/Sidebar";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path = "/" element={<HomePage/>}/>
         <Route path ="/adminDashboard" element= {<AdminDashboard/>}/>
         <Route path='/admin/edit/:id' element={<AdminEditProduct />} />
+        <Route path='/admin/view/:id' element={<AdminView />} />
         <Route path="/sidebar" element={<Sidebar/>}/>
            
       </Routes>

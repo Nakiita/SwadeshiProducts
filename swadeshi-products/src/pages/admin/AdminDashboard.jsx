@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faEdit, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const AdminDashboard = () => {
     const [productName, setProductName] = useState('');
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
                     toast.error(res.data.message);
                 } else {
                     toast.success(res.data.message);
-                    window.location.reload(); // Refresh to show new product
+                    window.location.reload(); // Have to refresh to show the newly created product.
                 }
             })
             .catch((err) => {
@@ -66,7 +66,7 @@ const AdminDashboard = () => {
             }
         });
     };
-
+    //Search query
     const filteredProducts = products.filter(product =>
         product.productName.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -82,27 +82,28 @@ const AdminDashboard = () => {
                         <div className="row">
                             <div className="col">
                                 <h3 style={{ marginTop: 20 }}>Products</h3>
-                                <p>Manage the list of products.</p>
+                                <p>Add new products</p>
 
+
+
+                                <div className="d-flex justify-content-end">
+                                    <button type="button" className="btn btn-dark mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Add Product
+                                    </button>
+                                </div>
                                 <div className="d-flex justify-content-center">
-                                    <div className="input-group mb-3 mx-auto" style={{ maxWidth: "700px" }}>
-                                        <span className="input-group-text">
-                                            <FontAwesomeIcon icon={faSearch} />
-                                        </span>
+
+                                    <form className="d-flex mx-auto mb-4" style={{ width: "600px" }} role="search">
                                         <input
                                             type="text"
                                             placeholder="Search by Name"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                             className="form-control"
+
                                         />
-                                    </div>
+                                    </form>
                                 </div>
-
-                                <button type="button" className="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    Add Product
-                                </button>
-
                                 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
@@ -122,6 +123,7 @@ const AdminDashboard = () => {
 
                                                 <label>Select category</label>
                                                 <select onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
+                                                    <option value="select">Select products</option>
                                                     <option value="Hemp">Hemp Products</option>
                                                     <option value="Singing Bowl">Singing Bowl</option>
                                                     <option value="Pottery">Pottery</option>
@@ -149,40 +151,56 @@ const AdminDashboard = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div className="row">
+                                <div className="col">
+                                    <table className='table mt-2'>
+                                        <thead className='table-dark'>
+                                            <tr>
+                                                <th>Product Image</th>
+                                                <th>Product Name</th>
+                                                <th>Product Price</th>
+                                                <th>Product Category</th>
+                                                <th>Product Description</th>
+                                                <th>Product Quantity</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filteredProducts.map((item) => (
+                                                <tr key={item._id}>
+                                                    <td>
+                                                        <img src={item.productImageUrl} height={100} width={100} alt="Product" />
+                                                    </td>
+                                                    <td>{item.productName}</td>
+                                                    <td>NPR.{item.productPrice}</td>
+                                                    <td>{item.productCategory}</td>
+                                                    <td>{item.productDescription}</td>
+                                                    <td>{item.productQuantity}</td>
+                                                    <td>
+                                                        <div className="btn-group" role="group" aria-label="Basic example">
+                                                            <Link to={`/admin/edit/${item._id}`} type="button" className="btn btn me-2">
+                                                                <FontAwesomeIcon icon={faEdit} />
+                                                            </Link>
+                                                            <button onClick={() => handleDelete(item._id)} type="button" className="btn btn me-2">
+                                                                <FontAwesomeIcon icon={faTrash} />
+                                                            </button>
 
-                            <table className='table mt-2'>
-                                <thead className='table-dark'>
-                                    <tr>
-                                        <th>Product Image</th>
-                                        <th>Product Name</th>
-                                        <th>Product Price</th>
-                                        <th>Product Category</th>
-                                        <th>Product Description</th>
-                                        <th>Product Quantity</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredProducts.map((item) => (
-                                        <tr key={item._id}>
-                                            <td>
-                                                <img src={item.productImageUrl} height={40} width={40} alt="Product" />
-                                            </td>
-                                            <td>{item.productName}</td>
-                                            <td>NPR.{item.productPrice}</td>
-                                            <td>{item.productCategory}</td>
-                                            <td>{item.productDescription.slice(0, 10)}...</td>
-                                            <td>{item.productQuantity}</td>
-                                            <td>
-                                                <div className="btn-group" role="group" aria-label="Basic example">
-                                                    <Link to={`/admin/edit/${item._id}`} type="button" className="btn btn-success">Edit</Link>
-                                                    <button onClick={() => handleDelete(item._id)} type="button" className="btn btn-danger">Delete</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                                            <Link
+                                                                to={`/admin/view/${item._id}`}
+                                                                className="btn btn me-2"
+                                                            >
+                                                                <FontAwesomeIcon icon={faEye} />
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

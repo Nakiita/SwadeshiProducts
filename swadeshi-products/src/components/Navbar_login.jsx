@@ -1,12 +1,13 @@
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 const NavbarLogin = () => {
-    // get user data from local storage
+    // Get user data from local storage
     const user = JSON.parse(localStorage.getItem("user"));
 
-    //Logout function
+    // Logout function
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.clear();
@@ -59,65 +60,60 @@ const NavbarLogin = () => {
                                 />
                             </form>
                             <ul className="navbar-nav">
-                                <li className="nav-item" style={{ marginRight: "30px" }}>
+                                <li className="nav-item" style={{ marginRight: "80px" }}>
                                     <a className="nav-link active" href="/">
                                         Categories
                                     </a>
                                 </li>
-                                <li className="nav-item" style={{ marginRight: "30px" }}>
-                                    <a className="nav-link active" href="/cart">
-                                        <i className="fas fa-shopping-cart" style={{ fontSize: "24px" }}></i>
-                                    </a>
-                                </li>
-
+                                {user && (
+                                    <li className="nav-item" style={{ marginRight: "80px" }}>
+                                        <a className="nav-link active" href="/cart">
+                                            <FontAwesomeIcon icon={faCartShopping} />
+                                        </a>
+                                    </li>
+                                )}
                             </ul>
                         </div>
 
                         <form className="d-flex gap-2">
-
                             {user ? (
-                                <div class="dropdown">
+                                <div className="dropdown">
                                     <button
-                                        class="btn btn-dark dropdown-toggle"
+                                        className="btn btn-dark dropdown-toggle"
                                         type="button"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
                                     >
                                         {user.UserName}
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul className="dropdown-menu">
                                         <li>
-                                            <Link class="dropdown-item" to="/homepage">
-                                                Dashboard
+                                            <Link className="dropdown-item" to="profile">
+                                                Profile
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link class="dropdown-item" to="/emergency">
-                                                Emergency Contacts
+                                            <Link className="dropdown-item" to="/history">
+                                                Order History
                                             </Link>
                                         </li>
                                         <li>
-                                            <button onClick={handleLogout} class="dropdown-item">
+                                            <button onClick={handleLogout} className="dropdown-item">
                                                 Logout
                                             </button>
                                         </li>
                                     </ul>
                                 </div>
                             ) : (
-                                <>
-                                    <button
-                                        className="btn btn-dark"
-                                        onClick={handleLogin}
-                                        style={{ borderRadius: "20px", padding: "10px 20px" }}
-                                    >
-                                        Login / Register
-                                    </button>
-                                </>
+                                <button
+                                    className="btn btn-dark"
+                                    onClick={handleLogin}
+                                    style={{ borderRadius: "20px", padding: "10px 20px" }}
+                                >
+                                    Login / Register
+                                </button>
                             )}
-
                         </form>
-
-
                     </nav>
                 </div>
             </header>
