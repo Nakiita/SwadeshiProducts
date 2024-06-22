@@ -2,15 +2,12 @@ import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useHandleLogout from "../utils/handleLogout";
 
 const Sidebar = () => {
   //Logout
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-    window.location.reload();
-  };
+  const handleLogout = useHandleLogout(); 
   return (
     <>
       <div

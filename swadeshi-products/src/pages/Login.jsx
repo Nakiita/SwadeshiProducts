@@ -4,9 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -48,13 +46,13 @@ const Login = () => {
           // Redirect to homepage
 
           // navigate("/admin");
-           if (res.data.userData.isAdmin) {
-             // Redirect to admin page
-             navigate("/admin");
-           } else {
-             // Redirect to homepage
-             navigate("/");
-           }
+          if (res.data.userData.isAdmin) {
+            // Redirect to admin page
+            navigate("/admin");
+          } else {
+            // Redirect to homepage
+            navigate("/");
+          }
         }
       })
       .catch((err) => {
@@ -65,7 +63,7 @@ const Login = () => {
 
   return (
     <>
- <Navbar/>
+    
       <section class="row min-vh-100 align-items-center">
         <div class="container py-5 d-flex justify-content-center">
           <div class="col col-md-10 col-sm-12 col-lg-8">
@@ -82,7 +80,7 @@ const Login = () => {
 
                 <div>
                   <a
-                    className="position-absolute top-0 end-0 m-2 text-black"
+                    className="position-absolute top-0 end-0 m-2 text-blue"
                     style={{ cursor: "pointer" }}
                     onClick={() => navigate("/")}
                   >
@@ -90,14 +88,14 @@ const Login = () => {
                   </a>
                 </div>
                 <div class="col-md-6 col-lg-6 order-lg-3 d-flex align-items-center">
-                  <div class="card-body p-5 p-lg-5 text-black">
+                  <div class="card-body p-5 p-lg-5 text-blue">
                     <form>
                       <div class="mb-4 d-flex justify-content-center">
                         <i class="fas fa-cubes fa-2x me-2"></i>
                       </div>
 
                       <h3 class="fw-bold d-flex justify-content-center mb-4">
-                       Welcome Back To Swadeshi Family!!!
+                        Welcome Back To Swadeshi Family!!!
                       </h3>
 
                       <div class="form-outline mb-3">
@@ -120,7 +118,7 @@ const Login = () => {
 
                       <a
                         href="/forgotPassword"
-                        class="text-decoration-none text-black ms-2 mb-2"
+                        class="text-decoration-none text-blue-500 ms-2 mb-2"
                       >
                         Forgot password?
                       </a>
@@ -128,19 +126,18 @@ const Login = () => {
                       <div class="pt-1 mb-3 d-flex text-center justify-content-center">
                         <button
                           onClick={handleSubmit}
-                          className="btn w-50 mb-2 btn btn-dark"
+                          className="btn w-50 mb-2 btn btn-success"
                           type="button"
                         >
                           Login
                         </button>
                       </div>
 
-
                       <p class="mb-2 d-flex justify-content-center">
                         Are you New?
                         <a
                           href="/register"
-                          class="text-decoration-none text-black ms-1"
+                          class="text-decoration-none text-blue-500 ms-1"
                         >
                           Create an Account
                         </a>
@@ -153,10 +150,9 @@ const Login = () => {
           </div>
         </div>
       </section>
-     <Footer/>
+      <Footer />
     </>
   );
 };
 
 export default Login;
-

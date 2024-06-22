@@ -1,93 +1,89 @@
-import { width } from "@fortawesome/free-brands-svg-icons/fa42Group";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import useHandleLogout from "../utils/handleLogout";
+import getUser from "../utils/getUser";
+import Search from "./Search";
+import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
-  // get user data from local storage
-  const user = JSON.parse(localStorage.getItem("user"));
+  // Get user data from local storage
+  const user = getUser();
 
-  //Logout function
+  // Logout function
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
-    window.location.reload();
-  };
+  const handleLogout = useHandleLogout();
   const handleLogin = () => {
     navigate("/login");
   };
 
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+
   return (
-    <>
-      <header className="fixed-top bg-white sticky">
-                <div className="container">
-                    <nav className="navbar navbar-expand-lg navbar-light">
-                        <a className="navbar-brand text-danger fw-bold" href="/">
-                            <a className="navbar-brand" href="#">
-                                <img
-                                    src="../assets/images/logo.png"
-                                    style={{
-                                        width: "100px",
-                                        marginLeft: "-50px",
-                                    }}
-                                    alt="Swadeshi Products"
-                                />
+    <nav className="bg-white fixed w-full z-20 top-0 start-0">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto">
+        <Link
+          to="/"
+          className="flex items-center space-x-3 rtl:space-x-reverse"
+        >
+          <img
+            src="../assets/images/logo.png"
+            className="w-24"
+            alt="Swadeshi Logo"
+          />
+          <span className="self-center font-bold whitespace-nowrap">
+            Swadeshi <br /> Products
+          </span>
+        </Link>
+        <div className="gap-6 ml-20 flex items-center w-full justify-between md:order-2">
+          <Search />
 
-                                SwadeshiProducts
+          <ul className="flex items-center gap-10">
+            <div className="flex flex-row gap-20">
+              <li>
+                <Link to="/">Categories</Link>
+              </li>
 
-                            </a>
-
-                        </a>
-                        <button
-                            className="navbar-toggler"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarNav"
-                            aria-controls="navbarNav"
-                            aria-expanded="true"
-                            aria-label="Toggle navigation"
-                        >
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-
-                        <div
-                            className="collapse navbar-collapse justify-content-center"
-                            id="navbarNav"
-                        >
-                            <form className="d-flex mx-auto" style={{ width: "600px" }} role="search">
-                                <input
-                                    className="form-control me-2"
-                                    type="search"
-                                    placeholder="Search your favorite product..."
-                                    aria-label="Search"
-                                    style={{ borderRadius: "80px" }}
-                                />
-                            </form>
-              <ul className="navbar-nav">
-                <li className="nav-item" style={{ marginRight: "30px" }}>
-                  <a className="nav-link active" href="/">
-                    Categories
-                  </a>
+              {user && (
+                <li>
+                  <Link to="/cart">
+                    <FontAwesomeIcon icon={faCartShopping} />
+                  </Link>
                 </li>
-                <li className="nav-item" style={{ marginRight: "30px" }}>
-                  <a className="nav-link active" href="#about">
-                    Contact Us
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link active" href="#facility">
-                    About Us
-                  </a>
-                </li>
-              </ul>
-
+              )}
             </div>
+            {isLoginPage && (
+              <>
+                <li>
+                  <Link to="/contact">Contact Us</Link>
+                </li>
+                <li>
+                  <Link to="/about">About Us</Link>
+                </li>
+              </>
+            )}
+          </ul>
 
-          </nav>
+          {user ? (
+            <UserAvatar user={user} handleLogout={handleLogout} />
+          ) : (
+            <>
+              {!isLoginPage && (
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  className="text-white bg-black font-medium rounded-lg text-sm px-4 py-2 ml-4"
+                >
+                  Login/Register
+                </button>
+              )}
+            </>
+          )}
         </div>
-      </header>
-    </>
+      </div>
+    </nav>
   );
 };
-
 export default Navbar;
