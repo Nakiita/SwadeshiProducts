@@ -13,7 +13,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminEditProduct from "./pages/admin/AdminEdit";
 import AdminView from "./pages/admin/AdminView";
 import Sidebar from "./components/Sidebar";
-
+import About from "./pages/user/About";
+import Contact from "./pages/user/Contact";
 function App() {
   return (
     <Router>
@@ -32,7 +33,9 @@ function App() {
         <Route path='/admin/edit/:id' element={<AdminEditProduct />} />
         <Route path='/admin/view/:id' element={<AdminView />} />
         <Route path="/sidebar" element={<Sidebar/>}/>
-           
+        <Route path="/about" element= {<About/>}/>
+        <Route path="/contact" element = {<Contact/>}/>
+            
       </Routes>
     </Router>
   );
