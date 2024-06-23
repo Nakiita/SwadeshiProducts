@@ -1,6 +1,4 @@
 import React from "react";
-import NavbarLogin from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const Contact = () => {
   return (

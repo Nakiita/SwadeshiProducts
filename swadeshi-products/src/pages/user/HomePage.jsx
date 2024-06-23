@@ -4,95 +4,91 @@ import {
   faShoppingBag,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import Footer from "../../components/Footer";
-import NavbarLogin from "../../components/Navbar";
+import { Banner } from "../../components/Banner";
 
 const HomePage = () => {
   return (
     <>
-      <div className="container mt-5">
+      <div className="mt-5">
         {/* Top Section */}
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card" style={{ marginTop: "140px" }}>
-              <img
-                src="../assets/images/made-in-nepal.jpg"
-                className="card-img-top"
-                alt="Made in Nepal"
-                style={{ height: "400px", objectFit: "cover" }}
-              />
-            </div>
-          </div>
-          <div className="col-md-8">
-            <div className="card" style={{ marginTop: "115px" }}>
-              <img
-                src="../assets/images/ssss.png"
-                className="card-img-top"
-                alt="Swadeshi Collection"
-                style={{ height: "100%", objectFit: "cover" }}
-              />
-            </div>
-          </div>
-        </div>
+
+        <Banner />
 
         {/* Discover Authenticity Section */}
-        <h3 className="mt-5 mb-3">Discover Authenticity</h3>
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card mb-4">
+        <h3 className="mt-8 mb-4 text-3xl font-semibold">
+          Discover Authenticity
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
               <img
                 src="../assets/images/dhaka.jpg"
-                className="card-img-top"
+                className="w-full h-80 object-cover"
                 alt="Dhaka"
-                style={{ height: "300px", objectFit: "cover" }}
               />
-              <div className="card-body">
-                <h5 className="card-title">Dhaka</h5>
-                <div className="d-flex justify-content-between align-items-center">
-                  <p className="card-text mb-0">Rs. 1300</p>
-                  <div>
-                    <FontAwesomeIcon icon={faShoppingCart} className="me-5" />
-                    <FontAwesomeIcon icon={faShoppingBag} />
+              <div className="p-4">
+                <h5 className="text-xl font-semibold mb-2">Dhaka</h5>
+                <div className="flex justify-between items-center">
+                  <p className="text-lg font-medium">Rs. 1300</p>
+                  <div className="flex space-x-4">
+                    <FontAwesomeIcon
+                      icon={faShoppingCart}
+                      className="text-gray-600"
+                    />
+                    <FontAwesomeIcon
+                      icon={faShoppingBag}
+                      className="text-gray-600"
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="card mb-4">
+          <div>
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
               <img
                 src="../assets/images/singing-bowl.jpg"
-                className="card-img-top"
+                className="w-full h-80 object-cover"
                 alt="Singing Bowl"
-                style={{ height: "300px", objectFit: "cover" }}
               />
-              <div className="card-body">
-                <h5 className="card-title">Singing Bowl</h5>
-                <div className="d-flex justify-content-between align-items-center">
-                  <p className="card-text mb-0">Rs. 3000</p>
-                  <div>
-                    <FontAwesomeIcon icon={faShoppingCart} className="me-5" />
-                    <FontAwesomeIcon icon={faShoppingBag} />
+              <div className="p-4">
+                <h5 className="text-xl font-semibold mb-2">Singing Bowl</h5>
+                <div className="flex justify-between items-center">
+                  <p className="text-lg font-medium">Rs. 3000</p>
+                  <div className="flex space-x-4">
+                    <FontAwesomeIcon
+                      icon={faShoppingCart}
+                      className="text-gray-600"
+                    />
+                    <FontAwesomeIcon
+                      icon={faShoppingBag}
+                      className="text-gray-600"
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="card mb-4">
+          <div>
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
               <img
                 src="../assets/images/pottery-set.jpg"
-                className="card-img-top"
+                className="w-full h-80 object-cover"
                 alt="Pottery Set"
-                style={{ height: "300px", objectFit: "cover" }}
               />
-              <div className="card-body">
-                <h5 className="card-title">Pottery Set</h5>
-                <div className="d-flex justify-content-between align-items-center">
-                  <p className="card-text mb-0">Rs. 1500</p>
-                  <div>
-                    <FontAwesomeIcon icon={faShoppingCart} className="me-5" />
-                    <FontAwesomeIcon icon={faShoppingBag} />
+              <div className="p-4">
+                <h5 className="text-xl font-semibold mb-2">Pottery Set</h5>
+                <div className="flex justify-between items-center">
+                  <p className="text-lg font-medium">Rs. 1500</p>
+                  <div className="flex space-x-4">
+                    <FontAwesomeIcon
+                      icon={faShoppingCart}
+                      className="text-gray-600"
+                    />
+                    <FontAwesomeIcon
+                      icon={faShoppingBag}
+                      className="text-gray-600"
+                    />
                   </div>
                 </div>
               </div>
