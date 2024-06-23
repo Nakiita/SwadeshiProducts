@@ -10,7 +10,6 @@ import NavbarLogin from "../../components/Navbar";
 const HomePage = () => {
   return (
     <>
-
       <div className="container mt-5">
         {/* Top Section */}
         <div className="row">
@@ -101,7 +100,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -5,7 +5,6 @@ import Footer from "../../components/Footer";
 const Contact = () => {
   return (
     <>
-      <NavbarLogin />
       <div class="container contact-section">
         <div class="row" style={{ marginTop: "180px" }}>
           <div class="col-md-6">
@@ -64,7 +63,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
