@@ -1,19 +1,16 @@
 import React from "react";
-import Footer from "../../components/Footer";
-import Navbar from "../../components/Navbar";
+
 const About = () => {
   return (
     <>
-      <div className="container mt-5">
-        <div class="row">
-          <div class="col-md-6 content0" style={{ marginTop: "150px" }}>
-            <h1>About</h1>
-            <h4
-              style={{ color: "grey", marginTop: "20px", marginBottom: "20px" }}
-            >
+      <div className="container mx-auto mt-12">
+        <div className="flex flex-wrap">
+          <div className="w-full md:w-1/2 px-4 mt-10 md:mt-36">
+            <h1 className="text-3xl font-bold">About</h1>
+            <h4 className="text-gray-500 mt-5 mb-5 text-lg">
               Discover the Essence of Nepal: A Guide to Our Swadeshi Collection
             </h4>
-            <p>
+            <p className="text-base">
               Welcome to Swadeshi Products, your premier destination for
               authentic Nepali swadeshi products. Founded with a vision to
               promote and celebrate the rich heritage and craftsmanship of
@@ -32,8 +29,12 @@ const About = () => {
               and appreciation.
             </p>
           </div>
-          <div class="col-md-6">
-            <img src="../assets/images/about.jpg" alt="Nepali Handicrafts" />
+          <div className="mb-[5rem] mt-[5rem] md:w-1/2 px-4">
+            <img
+              src="../assets/images/about.jpg"
+              alt="Nepali Handicrafts"
+              className="w-full h-auto"
+            />
           </div>
         </div>
       </div>

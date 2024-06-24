@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { resetPasswordApi } from "../apis/Api";
 import { toast } from "react-toastify";
 
@@ -34,49 +34,64 @@ const ResetPassword = () => {
   };
 
   return (
-    <section class="vh-100">
-      <div class="container py-5 d-flex justify-content-center">
-        <div className="col col-md-10 col-sm-12 col-lg-5">
-          <div
-            class="card d-flex align-items-center shadow-lg"
-            style={{
-              background: "linear-gradient(to top, #ffffff, #61C0BF)",
-            }}
-          >
-            <div class="col-md-6 col-lg-9 d-flex align-items-center">
-              <div class="card-body p-8 p-lg-5 text-black">
-                <form>
-                  <div class=" mb-9 pb-10 ">
-                    <i class="fas fa-cubes fa-2x me-2 d-flex justify-content-center"></i>
-                  </div>
-                  <h3 class="fw-bold mb-3 pb-3 d-flex justify-content-center">
-                    Forgot Password?
-                  </h3>
-                  <div class="form-outline mb-4">
-                    <label class="form-label">Enter New Password</label>
-                    <input
-                      value={newPassword}
-                      onChange={handleNewPassword}
-                      type="email"
-                      class="form-control form-control-lg border-2 border-black"
-                    />
-                  </div>
-                  <div class="pt-1 mb-4 d-flex text-center justify-content-center">
-                    <button
-                      onClick={handleResetPassword}
-                      className="btn w-50 mb-2 btn btn-dark"
-                      type="button"
-                    >
-                      Reset Password
-                    </button>
-                  </div>
-                </form>
+    <>
+      <img
+        src="./assets/images/RP.svg"
+        alt="Reset Password"
+        className="flex mt-[6rem] w-[15rem] ml-[35rem]"
+      />
+      <div className="flex mb-[5rem] justify-center">
+        <div className="w-full lg:w-1/2 flex items-center justify-center">
+          <div className="max-w-md w-full p-6">
+            <h1 className="text-2xl font-semibold mb-6 text-black text-center">
+              Reset Your Password
+            </h1>
+
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  New Password
+                </label>
+                <input
+                  onChange={handleNewPassword}
+                  type="text"
+                  id="password"
+                  name="password"
+                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                />
               </div>
+
+              <div>
+                <button
+                  type="submit"
+                  className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                >
+                  Update Password
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-4 text-sm text-gray-600 text-center">
+              <p>
+                Return to &nbsp;
+                <Link to="/register" className="text-black hover:underline">
+                  Login
+                </Link>
+              </p>
             </div>
+            <p className="text-[8px] mt-5 flex items-center justify-center">
+              By clicking continue, you agree to our &nbsp;{" "}
+              <b>Terms of Service</b>
+              &nbsp; and &nbsp;
+              <b>Privacy Policy</b>
+            </p>
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

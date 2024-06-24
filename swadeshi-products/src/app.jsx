@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ForgetPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 import Footer from "./components/Footer";
 import ResetPassword from "./pages/ResetPassword";
 import HomePage from "./pages/user/HomePage";
@@ -25,7 +25,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
-          <Route path="/forgot-password" element={<ForgetPassword />}></Route>
+          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
           <Route
             path="/password/reset/:token"
             element={<ResetPassword />}

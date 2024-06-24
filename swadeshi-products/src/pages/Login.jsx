@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { loginApi } from "../apis/Api";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
+import { z } from "zod";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const [errors, setErrors] = useState({});
 
   const changeEmail = (e) => {
     setEmail(e.target.value);
@@ -16,14 +19,32 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
+  // Define the Zod validation schema
+  const schema = z.object({
+    email: z.string().min(1, "Email is required"),
+    password: z.string().min(1, "Password is required"),
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password);
 
     const data = {
-      email: email,
-      password: password,
+      email,
+      password,
     };
+
+    // Validate form data using Zod schema
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      const newErrors = {};
+      result.error.errors.forEach((err) => {
+        newErrors[err.path[0]] = err.message;
+      });
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({}); 
 
     loginApi(data)
       .then((res) => {
@@ -51,7 +72,7 @@ const Login = () => {
     <div className="flex h-screen mb-[5rem] mt-[10rem]">
       <div className="overflow-hidden hidden lg:flex items-center justify-center flex-1 bg-white text-black">
         <img
-          src="../assets/images/Login.jpg"
+          src="./assets/images/Login.jpg"
           alt="login image"
           className="w-full"
         />
@@ -78,6 +99,9 @@ const Login = () => {
                 name="email"
                 className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
             </div>
             <div>
               <label
@@ -93,6 +117,9 @@ const Login = () => {
                 name="password"
                 className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
             </div>
             <Link
               to="/forgot-password"

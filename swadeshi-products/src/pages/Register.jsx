@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { registerApi } from "../apis/Api";
 import { useNavigate, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { z } from "zod";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -12,6 +11,8 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
+
+  const [errors, setErrors] = useState({});
 
   const changeUserName = (e) => {
     setUserName(e.target.value);
@@ -30,33 +31,31 @@ const Register = () => {
     setconfirmPassword(e.target.value);
   };
 
-  // Validation functions
-  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); //^ for string [^\s@]+@[^\s@] for @ and [^\s@] for .com
-  const isValidPhoneNumber = (number) => /^\d{10}$/.test(number);
-  const isValidPassword = (password) => password.length >= 8;
+  // Define the Zod validation schema
+  const schema = z
+    .object({
+      UserName: z.string().min(1, "Username is required"),
+      email: z
+        .string()
+        .min(1, "Email is required")
+        .email("Invalid email format"),
+      phoneNumber: z
+        .string()
+        .min(1, "Phone number is required")
+        .regex(/^\d{10}$/, "Phone number must be 10 digits"),
+      password: z
+        .string()
+        .min(1, "Password is required")
+        .min(8, "Password must be at least 8 characters long"),
+      confirmPassword: z.string().min(1, "Confirm Password is required"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!isValidEmail(email)) {
-      toast.error("Invalid email format.");
-      return;
-    }
-
-    if (!isValidPhoneNumber(phoneNumber)) {
-      toast.error("Phone number must be 10 digits.");
-      return;
-    }
-
-    if (!isValidPassword(password)) {
-      toast.error("Password must be at least 8 characters long.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
 
     const data = {
       UserName,
@@ -66,9 +65,24 @@ const Register = () => {
       confirmPassword,
     };
 
+    // Validate form data using Zod schema
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      const newErrors = {};
+      result.error.errors.forEach((err) => {
+        console.log(err);
+
+        newErrors[err.path[0]] = err.message;
+      });
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({}); // Clear errors if validation passes
+
     registerApi(data)
       .then((res) => {
-        if (res.data.success == true) {
+        if (res.data.success === true) {
           toast.success(res.data.message);
           navigate("/login");
         } else {
@@ -113,6 +127,9 @@ const Register = () => {
                   name="username"
                   className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {errors.UserName && (
+                  <p className="text-red-500 text-sm mt-1">{errors.UserName}</p>
+                )}
               </div>
               <div>
                 <label
@@ -128,13 +145,16 @@ const Register = () => {
                   name="email"
                   className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
               <div>
                 <label
                   htmlFor="phoneNumber"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  PhoneNumber
+                  Phone Number
                 </label>
                 <input
                   onChange={changePhoneNumber}
@@ -143,6 +163,11 @@ const Register = () => {
                   name="phoneNumber"
                   className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {errors.phoneNumber && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.phoneNumber}
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -158,21 +183,29 @@ const Register = () => {
                   name="password"
                   className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                )}
               </div>
               <div>
                 <label
-                  htmlFor="changepassword"
+                  htmlFor="confirmPassword"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Change Password
+                  Confirm Password
                 </label>
                 <input
                   onChange={changeconfirmPassword}
                   type="password"
-                  id="password"
-                  name="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
               <div>
                 <button

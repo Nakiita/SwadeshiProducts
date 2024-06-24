@@ -3,7 +3,7 @@ import { forgotPasswordApi } from "../apis/Api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
 
   const handleForgotPasswordEmail = (e) => {
@@ -34,7 +34,12 @@ const ForgetPassword = () => {
 
   return (
     <>
-      <div className="flex h-screen mb-[5rem] mt-[10rem] justify-center">
+      <img
+        src="./assets/images/FP.svg"
+        alt="forgot-password image"
+        className="flex mt-[6rem] w-[15rem] ml-[35rem]"
+      />
+      <div className="flex mb-[5rem] justify-center">
         <div className="w-full lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
             <h1 className="text-2xl font-semibold mb-6 text-black text-center">
@@ -75,7 +80,7 @@ const ForgetPassword = () => {
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>
                 Return to &nbsp;
-                <Link to="/register" className="text-black hover:underline">
+                <Link to="/login" className="text-black hover:underline">
                   Login
                 </Link>
               </p>
@@ -92,5 +97,4 @@ const ForgetPassword = () => {
     </>
   );
 };
-
-export default ForgetPassword;
+export default ForgotPassword;
