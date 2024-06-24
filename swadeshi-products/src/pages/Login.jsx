@@ -59,8 +59,8 @@ const Login = () => {
 
       <div className="w-full lg:w-1/2 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
-          <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-            Welcome to Swadeshi Products!!
+          <h1 className="text-2xl font-semibold mb-6 text-black text-center">
+            Welcome Back Swadeshi Family!!
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-4">
