@@ -3,6 +3,7 @@ import {
   createProductApi,
   deleteProductApi,
   getAllProductsApi,
+  getAllCategoriesApi,
 } from "../../apis/Api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -30,6 +31,18 @@ const AdminDashboard = () => {
   useEffect(() => {
     getAllProductsApi().then((res) => {
       setProducts(res.data.products);
+    });
+  }, []);
+
+  //categories
+
+  const [categories, setCategories] = useState([]);
+
+  console.log(categories);
+
+  useEffect(() => {
+    getAllCategoriesApi().then((res) => {
+      setCategories(res.data.categories);
     });
   }, []);
 
@@ -177,23 +190,15 @@ const AdminDashboard = () => {
                               className="block w-full mb-4 p-2 border rounded"
                             >
                               <option value="select">Select products</option>
-                              <option value="Hemp">Hemp Products</option>
-                              <option value="Singing Bowl">Singing Bowl</option>
-                              <option value="Pottery">Pottery</option>
-                              <option value="Bamboo Products">
-                                Bamboo Products
-                              </option>
-                              <option value="Pashmina Shawl">
-                                Pashmina Shawl
-                              </option>
-                              <option value="Dhaka Products">
-                                Dhaka Products
-                              </option>
-                              <option value="Khukuri">Khukuri</option>
-                              <option value="Thanka Paintings">
-                                Thanka Paintings
-                              </option>
-                              <option value="Jwelleries">Jwelleries</option>
+                              {categories.map((category) => (
+                                <option
+                                  key={category._id} // Always use keys when rendering lists of elements
+                                  value={category.categoryName}
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                  {category.categoryName}
+                                </option>
+                              ))}
                             </select>
                             <label className="block mb-2">
                               Product Quantity
