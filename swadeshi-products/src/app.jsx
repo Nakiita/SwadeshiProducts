@@ -15,6 +15,9 @@ import Sidebar from "./components/Sidebar";
 import About from "./pages/user/About";
 import Contact from "./pages/user/Contact";
 import Navbar from "./components/Navbar";
+import CategoriesDashboard from "./pages/admin/CategoriesDashboard";
+import AdminEditCategory from "./pages/admin/CategoriesEdit";
+import CategoriesEdit from "./pages/admin/CategoriesEdit";
 
 const App = () => {
   return (
@@ -38,6 +41,8 @@ const App = () => {
           <Route path="/sidebar" element={<Sidebar />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/categories" element={<CategoriesDashboard />} />
+          <Route path="/categories/edit/:id" element={<CategoriesEdit />} />
         </Routes>
         <Footer />
       </Router>

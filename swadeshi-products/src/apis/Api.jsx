@@ -29,21 +29,36 @@ export const resetPasswordApi = (data, token) =>
   Api.put(`/api/user/password/reset/${token}`, data);
 
 // create product API
-export const createProductApi = (formData) => Api.post('/api/product/create_product', formData)
+export const createProductApi = (formData) =>
+  Api.post("/api/product/create_product", formData);
 
 // get products API
-export const getAllProductsApi = () => Api.get('/api/product/get_products')
+export const getAllProductsApi = () => Api.get("/api/product/get_products");
 
 // get single product API
-export const getSingleProductApi = (id) => Api.get(`/api/product/get_product/${id}`)
+export const getSingleProductApi = (id) =>
+  Api.get(`/api/product/get_product/${id}`);
 
 // update product
-export const updateProductApi 
-        = (id, formData) => Api.put(`/api/product/update_product/${id}`, formData, config)
+export const updateProductApi = (id, formData) =>
+  Api.put(`/api/product/update_product/${id}`, formData, config);
 
 // delete product
-export const deleteProductApi = (id) => Api.delete(`/api/product/delete_product/${id}`, config)
+export const deleteProductApi = (id) =>
+  Api.delete(`/api/product/delete_product/${id}`, config);
 
+export const createCategoryApi = (formData) =>
+  Api.post("/api/category/createCategory", formData);
 
+// get products API
+export const getAllCategoriesApi = () => Api.get("/api/category/getCategories");
 
+export const getSingleCategoryApi = (id) =>
+  Api.get(`/api/category/getCategory/${id}`);
 
+export const updateCategoryApi = (id, formData) =>
+  Api.put(`/api/category/updateCategory/${id}`, formData, config);
+
+// delete product
+export const deleteCategoryApi = (id) =>
+  Api.delete(`/api/category/deleteCategory/${id}`, config);
