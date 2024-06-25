@@ -26,7 +26,6 @@ const Register = () => {
   const changePassword = (e) => {
     setPassword(e.target.value);
   };
-
   const changeconfirmPassword = (e) => {
     setconfirmPassword(e.target.value);
   };
@@ -34,24 +33,70 @@ const Register = () => {
   // Define the Zod validation schema
   const schema = z
     .object({
-      UserName: z.string().min(1, "Username is required"),
-      email: z
+      UserName: z.string().min(1, { message: "Username is required" }),
+      email: z.string().min(1, { message: "Email is required" }),
+      phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+      password: z.string().min(1, { message: "Password is required" }),
+      confirmPassword: z
         .string()
-        .min(1, "Email is required")
-        .email("Invalid email format"),
-      phoneNumber: z
-        .string()
-        .min(1, "Phone number is required")
-        .regex(/^\d{10}$/, "Phone number must be 10 digits"),
-      password: z
-        .string()
-        .min(1, "Password is required")
-        .min(8, "Password must be at least 8 characters long"),
-      confirmPassword: z.string().min(1, "Confirm Password is required"),
+        .min(1, { message: "Confirm Password is required" }),
     })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
+    .superRefine((data, ctx) => {
+      if (data.email.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Email is required",
+          path: ["email"],
+        });
+      } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Invalid email format",
+          path: ["email"],
+        });
+      }
+
+      if (data.phoneNumber.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Phone number is required",
+          path: ["phoneNumber"],
+        });
+      } else if (!/^\d{10}$/.test(data.phoneNumber)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Phone number must be 10 digits",
+          path: ["phoneNumber"],
+        });
+      }
+
+      if (data.password.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password is required",
+          path: ["password"],
+        });
+      } else if (data.password.length < 8) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Password must be at least 8 characters long",
+          path: ["password"],
+        });
+      }
+
+      if (data.confirmPassword.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Confirm Password is required",
+          path: ["confirmPassword"],
+        });
+      } else if (data.password !== data.confirmPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Passwords do not match",
+          path: ["confirmPassword"],
+        });
+      }
     });
 
   const handleSubmit = (e) => {
@@ -71,7 +116,6 @@ const Register = () => {
       const newErrors = {};
       result.error.errors.forEach((err) => {
         console.log(err);
-
         newErrors[err.path[0]] = err.message;
       });
       setErrors(newErrors);
@@ -122,6 +166,7 @@ const Register = () => {
                 </label>
                 <input
                   onChange={changeUserName}
+                  value={UserName}
                   type="text"
                   id="username"
                   name="username"
@@ -140,6 +185,7 @@ const Register = () => {
                 </label>
                 <input
                   onChange={changeEmail}
+                  value={email}
                   type="text"
                   id="email"
                   name="email"
@@ -158,6 +204,7 @@ const Register = () => {
                 </label>
                 <input
                   onChange={changePhoneNumber}
+                  value={phoneNumber}
                   type="text"
                   id="phoneNumber"
                   name="phoneNumber"
@@ -178,6 +225,7 @@ const Register = () => {
                 </label>
                 <input
                   onChange={changePassword}
+                  value={password}
                   type="password"
                   id="password"
                   name="password"
@@ -196,6 +244,7 @@ const Register = () => {
                 </label>
                 <input
                   onChange={changeconfirmPassword}
+                  value={confirmPassword}
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
