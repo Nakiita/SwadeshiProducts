@@ -2,6 +2,7 @@ const router = require('express').Router();
 const productController = require("../controllers/productController");
 const { authGuard,authGuardAdmin } = require('../middleware/authGuard');
 
+
 router.post('/create_product', productController.createProduct)
 
 // get all products

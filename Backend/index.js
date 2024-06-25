@@ -2,14 +2,14 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./database/db");
 const cors = require("cors");
-const morgan = require("morgan")
+const morgan = require("morgan");
 const cloudinary = require("cloudinary");
 const acceptMultimedia = require("connect-multiparty");
-const colors = require('colors');
+const colors = require("colors");
 
 // Making express app
 const app = express();
-app.use(morgan("dev"))
+app.use(morgan("dev"));
 
 // dotenv config
 dotenv.config();
@@ -37,7 +37,7 @@ connectDB();
 
 // Accepting json data
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }));
 
 // creating test route
 app.get("/test", (req, res) => {
@@ -48,8 +48,9 @@ app.get("/test", (req, res) => {
 app.use("/api/user", require("./routes/userRoutes"));
 
 //product routes
-app.use("/api/product", require("./routes/adminRoutes"))
+app.use("/api/product", require("./routes/adminRoutes"));
 
+app.use("/api/category", require("./routes/categoriesRoutes"));
 
 // defining port
 const PORT = process.env.PORT;
