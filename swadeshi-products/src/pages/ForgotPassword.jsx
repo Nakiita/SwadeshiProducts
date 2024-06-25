@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import { forgotPasswordApi } from "../apis/Api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { z } from "zod";
 
 const ForgotPassword = () => {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleForgotPasswordEmail = (e) => {
     setForgotPasswordEmail(e.target.value);
   };
+
+  // Define the Zod validation schema
+  const schema = z.object({
+    email: z.string().min(1, { message: "Email is required" }),
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +23,19 @@ const ForgotPassword = () => {
     const data = {
       email: forgotPasswordEmail,
     };
+
+    // Validate form data using Zod schema
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      const newErrors = {};
+      result.error.errors.forEach((err) => {
+        newErrors[err.path[0]] = err.message;
+      });
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({}); // Clear errors if validation passes
 
     forgotPasswordApi(data)
       .then((res) => {
@@ -46,7 +66,7 @@ const ForgotPassword = () => {
               Forgot Your Password?
             </h1>
             <p className="text-center">
-              Please enter the email address associated with your account and We
+              Please enter the email address associated with your account and we
               will email you a link to reset your password.
             </p>
 
@@ -60,11 +80,15 @@ const ForgotPassword = () => {
                 </label>
                 <input
                   onChange={handleForgotPasswordEmail}
+                  value={forgotPasswordEmail}
                   type="text"
                   id="email"
                   name="email"
                   className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -97,4 +121,5 @@ const ForgotPassword = () => {
     </>
   );
 };
+
 export default ForgotPassword;

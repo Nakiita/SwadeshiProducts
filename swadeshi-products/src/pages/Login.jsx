@@ -44,7 +44,7 @@ const Login = () => {
       return;
     }
 
-    setErrors({}); 
+    setErrors({});
 
     loginApi(data)
       .then((res) => {
