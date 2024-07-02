@@ -64,26 +64,7 @@ const createUser = async (req, res) => {
     res.status(500).json("Server Error");
   }
 };
-// const verifyMail = async (req, res) => {
-//   try {
-//     console.log("Verify Mail Request Params:", req.params); // Check the request parameters
-//     const updateInfo = await Users.updateOne(
-//       {
-//         _id: req.params.id,
-//       },
-//       {
-//         $set: { is_verified: 1 },
-//       }
-//     );
-//     console.log("Update Info:", updateInfo); // Check the update info
-//     res.status(200).json({
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.error("Verify Mail Error:", error); // Check the error message
-//     res.status(500).json({ success: false, message: "Server Error" });
-//   }
-// };
+
 const loginUser = async (req, res) => {
   // step 1: Check incomming data
   console.log(req.body);
@@ -191,6 +172,77 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  // step 1 : check incomming data
+  console.log(req);
+
+  // destructuring data
+  const { UserName, email, phoneNumber, address } = req.body;
+  const { profilePicture } = req.files;
+
+  // validate data
+  if (!UserName || !email || !phoneNumber) {
+    return res.json({
+      success: false,
+      message: "Required fields are missing!",
+    });
+  }
+
+  try {
+    // case 1 : if there is image
+    if (profilePicture) {
+      // upload image to cloudinary
+      const uploadedImage = await cloudinary.v2.uploader.upload(
+        profilePicture.path,
+        {
+          folder: "users",
+          crop: "scale",
+        }
+      );
+
+      // make updated json data
+      const updatedData = {
+        UserName: UserName,
+        email: email,
+        phoneNumber: phoneNumber,
+        address: address,
+        profilePicture: uploadedImage.secure_url,
+      };
+
+      // find product and update
+      const userId = req.params.id;
+      await Users.findByIdAndUpdate(userId, updatedData);
+      res.json({
+        success: true,
+        message: "User updated successfully with Image!",
+        updatedUser: updatedData,
+      });
+    } else {
+      // update without image
+      const updatedData = {
+        UserName: UserName,
+        email: email,
+        phoneNumber: phoneNumber,
+        address: address,
+      };
+
+      // find product and update
+      const userId = req.params.id;
+      await Users.findByIdAndUpdate(userId, updatedData);
+      res.json({
+        success: true,
+        message: "User updated successfully without Image!",
+        updatedUser: updatedData,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 const resetPassword = async (req, res) => {
   try {
     const resetPasswordToken = crypto
@@ -227,9 +279,11 @@ const resetPassword = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   createUser,
   loginUser,
   forgotPassword,
   resetPassword,
-}
+  updateUser,
+};

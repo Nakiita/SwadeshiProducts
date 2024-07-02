@@ -114,7 +114,7 @@ const updateCategory = async (req, res) => {
         productImageUrl: uploadedImage.secure_url,
       };
 
-      // find product and update
+      // find category and update
       const categoryId = req.params.id;
       await Categories.findByIdAndUpdate(categoryId, updatedData);
       res.json({
@@ -128,7 +128,7 @@ const updateCategory = async (req, res) => {
         categoryName: categoryName,
       };
 
-      // find product and update
+      // find category and update
       const categoryId = req.params.id;
       await Categories.findByIdAndUpdate(categoryId, updatedData);
       res.json({

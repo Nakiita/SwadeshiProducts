@@ -1,311 +1,390 @@
 const cloudinary = require("cloudinary");
 const Products = require("../model/productModel");
 const Orders = require("../model/orderModel");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
-const createProduct = async (req,res) => {
-    // step 1 : check incomming data
-    console.log(req.body);
-    console.log(req.files);
+// const createProduct = async (req,res) => {
+//     // step 1 : check incomming data
+//     console.log(req.body);
+//     console.log(req.files);
 
-    // step 2 : Destructuring data
-    const {
-        productName, 
-        productPrice,
-        productDescription,
-        productCategory,
-        productQuantity,
-    } = req.body;
-    const {productImage} = req.files;
+//     // step 2 : Destructuring data
+//     const {
+//         productName,
+//         productPrice,
+//         productDescription,
+//         productCategory,
+//         productQuantity,
+//     } = req.body;
+//     const {productImage} = req.files;
 
-    // step 3 : Validate data
-    if(!productName || !productPrice || !productDescription || !productCategory ||!productQuantity || !productImage){
-        return res.json({
-            success : false,
-            message : "Please fill all the fields"
-        })
-    }
+//     // step 3 : Validate data
+//     if(!productName || !productPrice || !productDescription || !productCategory ||!productQuantity || !productImage){
+//         return res.json({
+//             success : false,
+//             message : "Please fill all the fields"
+//         })
+//     }
 
-    try {
-        // upload image to cloudinary
-        const uploadedImage = await cloudinary.v2.uploader.upload(
-            productImage.path,
-            {
-                folder : "products",
-                crop : "scale"
-            }
-        )
+//     try {
+//         // upload image to cloudinary
+//         const uploadedImage = await cloudinary.v2.uploader.upload(
+//             productImage.path,
+//             {
+//                 folder : "products",
+//                 crop : "scale"
+//             }
+//         )
 
-        // Save to database
-        const newProduct = new Products({
-            productName : productName,
-            productPrice : productPrice,
-            productDescription : productDescription,
-            productCategory : productCategory,
-            productQuantity : productQuantity,
-            productImageUrl : uploadedImage.secure_url
-        })
-        await newProduct.save();
-        res.json({
-            success : true,
-            message : "Product created successfully",
-            product : newProduct
-        })
+//         // Save to database
+//         const newProduct = new Products({
+//             productName : productName,
+//             productPrice : productPrice,
+//             productDescription : productDescription,
+//             productCategory : productCategory,
+//             productQuantity : productQuantity,
+//             productImageUrl : uploadedImage.secure_url
+//         })
+//         await newProduct.save();
+//         res.json({
+//             success : true,
+//             message : "Product created successfully",
+//             product : newProduct
+//         })
 
+//     } catch (error) {
+//         res.status(500).json({
+//             success : false,
+//             message : "Internal server error"
+//         })
+//     }
 
-        
-    } catch (error) {
-        res.status(500).json({
-            success : false,
-            message : "Internal server error"
-        })
-    }
+// }
 
+const uploadsDir = path.join(__dirname, "uploads");
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
+
+const createProduct = async (req, res) => {
+  // Step 2: Destructuring data
+  const {
+    productName,
+    productPrice,
+    productDescription,
+    productCategory,
+    productQuantity,
+  } = req.body;
+  const productImage = req.files;
+  console.log(productImage);
+
+  // Step 3: Validate data
+  if (
+    !productName ||
+    !productPrice ||
+    !productDescription ||
+    !productCategory ||
+    !productQuantity ||
+    !productImage ||
+    productImage.length === 0
+  ) {
+    return res.json({
+      success: false,
+      message: "Please fill all the fields and upload at least one image.",
+    });
+  }
+
+  try {
+    // Upload images to Cloudinary
+    const imageUploadPromises = productImage.map((image) =>
+      cloudinary.v2.uploader.upload(image.path, {
+        folder: "products",
+        crop: "scale",
+      })
+    );
+    const uploadedImages = await Promise.all(imageUploadPromises);
+
+    // Get URLs of uploaded images
+    const imageUrls = uploadedImages.map((file) => file.secure_url);
+
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, "uploads/");
+      },
+      filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+      },
+    });
+    const upload = multer({ storage: storage });
+
+    // Save to database
+    const newProduct = new Products({
+      productName: productName,
+      productPrice: productPrice,
+      productDescription: productDescription,
+      productCategory: productCategory,
+      productQuantity: productQuantity,
+      productImageUrls: imageUrls,
+    });
+
+    await newProduct.save();
+
+    res.json({
+      success: true,
+      message: "Product created successfully",
+      product: newProduct,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
 
 // get all products
-const getProducts = async (req,res) => {
-    try {
-        const allProducts = await Products.find({});
-        res.json({
-            success : true,
-            message : "All products fetched successfully!",
-            products : allProducts
-        })
-        
-    } catch (error) {
-        console.log(error);
-        res.send("Internal server error")
-    }
-
-}
+const getProducts = async (req, res) => {
+  try {
+    const allProducts = await Products.find({});
+    res.json({
+      success: true,
+      message: "All products fetched successfully!",
+      products: allProducts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
 
 // fetch single product
-const getSingleProduct = async (req,res) => {
-    const productId = req.params.id;
-    try {
-        const singleProduct = await Products.findById(productId);
-        res.json({
-            success : true,
-            message : "Single product fetched successfully!",
-            product : singleProduct
-        })
-        
-    } catch (error) {
-        console.log(error);
-        res.send("Internal server error")
-    }
-}
+const getSingleProduct = async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const singleProduct = await Products.findById(productId);
+    res.json({
+      success: true,
+      message: "Single product fetched successfully!",
+      product: singleProduct,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
 
 // update product
-const updateProduct = async (req,res) => {
-    // step 1 : check incomming data
-    console.log(req.body);
-    console.log(req.files);
+const updateProduct = async (req, res) => {
+  // step 1 : check incomming data
+  console.log(req.body);
+  console.log(req.files);
 
-    // destructuring data
-    const {
-        productName,
-        productPrice,
-        productDescription,
-        productCategory,
-        productQuantity
-    } = req.body;
-    const {productImage} = req.files;
+  // destructuring data
+  const {
+    productName,
+    productPrice,
+    productDescription,
+    productCategory,
+    productQuantity,
+  } = req.body;
+  const { productImage } = req.files;
 
-    // validate data
-    if( !productName 
-        || !productPrice 
-        || !productDescription 
-        || !productCategory
-    || !productQuantity){
-        return res.json({
-            success : false,
-            message : "Required fields are missing!"
-        })
-    }
+  // validate data
+  if (
+    !productName ||
+    !productPrice ||
+    !productDescription ||
+    !productCategory ||
+    !productQuantity
+  ) {
+    return res.json({
+      success: false,
+      message: "Required fields are missing!",
+    });
+  }
 
-    try {
-        // case 1 : if there is image
-        if(productImage){
-            // upload image to cloudinary
-            const uploadedImage = await cloudinary.v2.uploader.upload(
-                productImage.path,
-                {
-                    folder : "products",
-                    crop : "scale"
-                }
-            )
-
-            // make updated json data
-            const updatedData = {
-                productName : productName,
-                productPrice : productPrice,
-                productDescription : productDescription,
-                productCategory : productCategory,
-                productQuantity :productQuantity,
-                productImageUrl : uploadedImage.secure_url
-            }
-
-            // find product and update
-            const productId = req.params.id;
-            await Products.findByIdAndUpdate(productId, updatedData)
-            res.json({
-                success : true,
-                message : "Product updated successfully with Image!",
-                updatedProduct : updatedData
-            })
-
-        } else {
-            // update without image
-            const updatedData = {
-                productName : productName,
-                productPrice : productPrice,
-                productDescription : productDescription,
-                productCategory : productCategory,
-                productQuantity :productQuantity,
-            }
-
-            // find product and update
-            const productId = req.params.id;
-            await Products.findByIdAndUpdate(productId, updatedData)
-            res.json({
-                success : true,
-                message : "Product updated successfully without Image!",
-                updatedProduct : updatedData
-            })
+  try {
+    // case 1 : if there is image
+    if (productImage) {
+      // upload image to cloudinary
+      const uploadedImage = await cloudinary.v2.uploader.upload(
+        productImage.path,
+        {
+          folder: "products",
+          crop: "scale",
         }
-        
-    } catch (error) {
-        res.status(500).json({  
-            success : false,
-            message : "Internal server error"
-        })
+      );
+
+      // make updated json data
+      const updatedData = {
+        productName: productName,
+        productPrice: productPrice,
+        productDescription: productDescription,
+        productCategory: productCategory,
+        productQuantity: productQuantity,
+        productImageUrl: uploadedImage.secure_url,
+      };
+
+      // find product and update
+      const productId = req.params.id;
+      await Products.findByIdAndUpdate(productId, updatedData);
+      res.json({
+        success: true,
+        message: "Product updated successfully with Image!",
+        updatedProduct: updatedData,
+      });
+    } else {
+      // update without image
+      const updatedData = {
+        productName: productName,
+        productPrice: productPrice,
+        productDescription: productDescription,
+        productCategory: productCategory,
+        productQuantity: productQuantity,
+      };
+
+      // find product and update
+      const productId = req.params.id;
+      await Products.findByIdAndUpdate(productId, updatedData);
+      res.json({
+        success: true,
+        message: "Product updated successfully without Image!",
+        updatedProduct: updatedData,
+      });
     }
-}
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
 
 // delete product
-const deleteProduct = async (req,res) =>{
-    const productId = req.params.id;
+const deleteProduct = async (req, res) => {
+  const productId = req.params.id;
 
-    try {
-        await Products.findByIdAndDelete(productId);
-        res.json({
-            success : true,
-            message : "Product deleted successfully!"
-        })
-        
-    } catch (error) {
-        res.json({
-            success : false,
-            message : "Server error!!"
-        })
-    }
-}
+  try {
+    await Products.findByIdAndDelete(productId);
+    res.json({
+      success: true,
+      message: "Product deleted successfully!",
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Server error!!",
+    });
+  }
+};
 
 // create order
-const createOrder = async(req,res) => {
-    console.log(req.body);
-    const  {userId, productId, quantity} = req.body;
+const createOrder = async (req, res) => {
+  console.log(req.body);
+  const { userId, productId, quantity } = req.body;
 
-    // validate data
-    if(!userId || !productId || !quantity){
-        return res.json({
-            success : false,
-            message : "Please fill all the fields"
-        })
-    }
+  // validate data
+  if (!userId || !productId || !quantity) {
+    return res.json({
+      success: false,
+      message: "Please fill all the fields",
+    });
+  }
 
-    try {
-        const newOrder = new Orders({
-            userId : userId,
-            productId : productId,
-            quantity : quantity,
-        })
-        await newOrder.save();
-        res.json({
-            success : true,
-            message : "Order created successfully!",
-            order : newOrder
-        })
-        
-    } catch (error) {
-        res.send(error)
-    }
-
-    
-}
+  try {
+    const newOrder = new Orders({
+      userId: userId,
+      productId: productId,
+      quantity: quantity,
+    });
+    await newOrder.save();
+    res.json({
+      success: true,
+      message: "Order created successfully!",
+      order: newOrder,
+    });
+  } catch (error) {
+    res.send(error);
+  }
+};
 
 // get orders and populate user
-const getOrders = async (req,res) => {
-    try {
-        const orders = await Orders.find({
-            $and : [
-                {"status" : "pending"},
-                {
-                    "quantity" : {
-                        $gt : 2
-                    }
-                }
-            ]
-        }).populate("userId", "firstName lastName")
-        res.json({
-            success : true,
-            message : "All orders fetched successfully!",
-            orders : orders
-        })
-        
-    } catch (error) {
-        console.log(error);
-    }
-}
+const getOrders = async (req, res) => {
+  try {
+    const orders = await Orders.find({
+      $and: [
+        { status: "pending" },
+        {
+          quantity: {
+            $gt: 2,
+          },
+        },
+      ],
+    }).populate("userId", "firstName lastName");
+    res.json({
+      success: true,
+      message: "All orders fetched successfully!",
+      orders: orders,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // pagination route
-const getPagination = async (req,res) => {
+const getPagination = async (req, res) => {
+  // step 1 : Get the page user requested
+  const requestedPage = req.query.page;
 
-    // step 1 : Get the page user requested
-    const requestedPage = req.query.page;
+  // step 2 : Result per page
+  const resultPerPage = 5;
 
-    // step 2 : Result per page
-    const resultPerPage = 5;
+  try {
+    // step 3 : Fetch all the products
+    // Result : (test1,test2,test3,test4,test5,test6)
+    const products = await Products.find({})
+      .skip((requestedPage - 1) * resultPerPage)
+      .limit(resultPerPage);
 
-    try {
-
-        // step 3 : Fetch all the products
-        // Result : (test1,test2,test3,test4,test5,test6)
-        const products = await Products.find({})
-        .skip((requestedPage - 1) * resultPerPage)
-        .limit(resultPerPage)
-
-        if(products.length === 0){
-            return res.json({
-                success : false,
-                message : "No Products found!"
-            })
-        }
-
-        res.json({
-            success : true,
-            products : products
-        })
-
-
-        
-    } catch (error) {
-        console.log(error)
-        res.send("Error Occured!")
+    if (products.length === 0) {
+      return res.json({
+        success: false,
+        message: "No Products found!",
+      });
     }
-    
-}
 
+    res.json({
+      success: true,
+      products: products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Error Occured!");
+  }
+};
 
 module.exports = {
-    createProduct,
-    getProducts,
-    getSingleProduct,
-    updateProduct,
-    deleteProduct, 
-    createOrder,
-    getOrders,
-    getPagination
-}
+  createProduct,
+  getProducts,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
+  createOrder,
+  getOrders,
+  getPagination,
+};

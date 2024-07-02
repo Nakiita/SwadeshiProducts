@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const userSchema = mongoose.Schema({
+  profilePicture: {
+    type: String,
+  },
   UserName: {
     type: String,
     required: true,
@@ -22,6 +25,9 @@ const userSchema = mongoose.Schema({
   confirmPassword: {
     type: String,
     required: true,
+  },
+  address: {
+    type: String,
   },
   // is_verified:{
   //     type: Number,
