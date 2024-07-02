@@ -14,8 +14,6 @@ const Navbar = () => {
 
   const [categories, setCategories] = useState([]);
 
-  console.log(categories);
-
   useEffect(() => {
     getAllCategoriesApi().then((res) => {
       setCategories(res.data.categories);
@@ -60,7 +58,7 @@ const Navbar = () => {
                   onMouseEnter={() => setShowDropdown(true)}
                   onMouseLeave={() => setShowDropdown(false)}
                 >
-                  <Link to="/" className="hover:text-gray-700">
+                  <Link to="/categories" className="hover:text-gray-700">
                     Categories
                   </Link>
                   {showDropdown && (

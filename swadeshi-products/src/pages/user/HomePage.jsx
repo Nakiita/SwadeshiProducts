@@ -5,6 +5,7 @@ import {
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 import { Banner } from "../../components/Banner";
+import ProductImages from "../../components/ProductImages";
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
         {/* Top Section */}
 
         <Banner />
+        <ProductImages/>
 
         {/* Discover Authenticity Section */}
         <h3 className="mt-8 mb-4 text-3xl font-semibold">

@@ -62,3 +62,7 @@ export const updateCategoryApi = (id, formData) =>
 // delete product
 export const deleteCategoryApi = (id) =>
   Api.delete(`/api/category/deleteCategory/${id}`, config);
+
+// update user
+export const updateUserApi = (id, formData) =>
+  Api.put(`/api/user/update_user/${id}`, formData, config);
