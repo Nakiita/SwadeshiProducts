@@ -42,7 +42,7 @@ const CategoriesEdit = () => {
           toast.error(res.data.message);
         } else {
           toast.success(res.data.message);
-          navigate("/categories");
+          navigate("/categories-dashboard");
         }
       })
       .catch((err) => {

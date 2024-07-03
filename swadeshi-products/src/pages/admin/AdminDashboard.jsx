@@ -153,7 +153,7 @@ const AdminDashboard = () => {
                           <form onSubmit={handleSubmit}>
                             <label className="block mb-2">Product Name</label>
                             <input
-                              value={productName}
+                              value={productName} 
                               onChange={(e) => setProductName(e.target.value)}
                               className="block w-full mb-4 p-2 border rounded"
                               type="text"
@@ -194,10 +194,7 @@ const AdminDashboard = () => {
                             >
                               <option value="">Select category</option>
                               {categories.map((category) => (
-                                <option
-                                  key={category._id}
-                                  value={category.categoryName}
-                                >
+                                <option key={category._id} value={category._id}>
                                   {category.categoryName}
                                 </option>
                               ))}

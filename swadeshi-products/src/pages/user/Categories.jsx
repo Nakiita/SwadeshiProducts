@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { getAllCategoriesApi } from "../../apis/Api";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllCategoriesApi().then((res) => {
       setCategories(res.data.categories);
     });
   }, []);
+
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/products/${categoryId}`, { replace: true });
+  };
 
   return (
     <div className="container mx-auto">
@@ -22,19 +28,19 @@ const Categories = () => {
             CATEGORIES
           </h3>
           {categories.map((category, index) => (
-            <div className="w-full md:w-1/4 p-2" key={index}>
-              <div className="max-w-sm bg-white border border-gray-200 shadow-md">
-                <div className="h-60 w-full object-cover overflow-hidden">
-                  <img
-                    src={category.categoryImageUrl}
-                    alt={category.categoryName}
-                  />
-                </div>
-                <div className="p-4">
-                  <h5 className="text-lg font-medium">
-                    {category.categoryName}
-                  </h5>
-                </div>
+            <div
+              className="w-full md:w-1/3 p-7"
+              key={index}
+              onClick={() => handleCategoryClick(category._id)}
+            >
+              <div className="h-30 w-full object-cover overflow-hidden">
+                <img
+                  src={category.categoryImageUrl}
+                  alt={category.categoryName}
+                />
+              </div>
+              <div className="p-1">
+                <h5 className="text-lg font-medium">{category.categoryName}</h5>
               </div>
             </div>
           ))}

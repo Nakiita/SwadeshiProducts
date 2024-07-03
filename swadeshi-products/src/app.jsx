@@ -19,6 +19,7 @@ import CategoriesDashboard from "./pages/admin/CategoriesDashboard";
 import CategoriesEdit from "./pages/admin/CategoriesEdit";
 import UserProfile from "./pages/user/UserProfile";
 import Categories from "./pages/user/Categories";
+import Products from "./pages/user/Products";
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/categories/edit/:id" element={<CategoriesEdit />} />
           <Route path="/user" element={<UserProfile />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/products/:categoryId" element={<Products />} />
         </Routes>
         <Footer />
       </Router>

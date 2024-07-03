@@ -14,7 +14,6 @@ const HomePage = () => {
         {/* Top Section */}
 
         <Banner />
-        <ProductImages/>
 
         {/* Discover Authenticity Section */}
         <h3 className="mt-8 mb-4 text-3xl font-semibold">
