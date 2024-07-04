@@ -77,7 +77,6 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-
 const upload = multer({ storage: storage });
 
 const createProduct = async (req, res) => {
@@ -89,8 +88,7 @@ const createProduct = async (req, res) => {
     productCategory,
     productQuantity,
   } = req.body;
-  const productImage = req.files;
-  console.log(productImage);
+  const productImage = req.files.productImage;
 
   // Step 3: Validate data
   if (
@@ -157,8 +155,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-// get all products
-const getProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
     const allProducts = await Products.find({});
     res.json({
@@ -169,6 +166,48 @@ const getProducts = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send("Internal server error");
+  }
+};
+
+const getProducts = async (req, res) => {
+  const { categoryId } = req.params;
+  let allProducts = [];
+
+  console.log("Requested categoryId:", categoryId);
+
+  try {
+    if (!categoryId || categoryId === "undefined") {
+      console.log("No categoryId provided or categoryId is undefined.");
+      allProducts = await Products.find({});
+      res.json({
+        success: false,
+        message: "Category ID is undefined or empty",
+      });
+    } else {
+      console.log("Fetching products for categoryId:", categoryId);
+      allProducts = await Products.find({ productCategory: categoryId });
+
+      console.log("Number of products found:", allProducts.length); // Log the count of products found
+
+      if (allProducts.length == 0) {
+        res.json({
+          success: true,
+          message: `No products found for categoryId: ${categoryId}`,
+        });
+      } else {
+        res.json({
+          success: true,
+          message: "All products fetched successfully!",
+          products: allProducts,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching products for categoryId:", categoryId, error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -381,6 +420,8 @@ const getPagination = async (req, res) => {
 module.exports = {
   createProduct,
   getProducts,
+  getAllProducts,
+  upload,
   getSingleProduct,
   updateProduct,
   deleteProduct,

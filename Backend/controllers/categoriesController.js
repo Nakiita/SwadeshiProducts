@@ -79,9 +79,6 @@ const getSingleCategory = async (req, res) => {
 };
 
 const updateCategory = async (req, res) => {
-  // step 1 : check incomming data
-  console.log(req.body);
-  console.log(req.files);
 
   // destructuring data
   const { categoryName, slug } = req.body;
@@ -111,7 +108,7 @@ const updateCategory = async (req, res) => {
       const updatedData = {
         categoryName: categoryName,
         slug: slug,
-        productImageUrl: uploadedImage.secure_url,
+        categoryImage: uploadedImage.secure_url,
       };
 
       // find category and update
