@@ -20,6 +20,7 @@ import CategoriesEdit from "./pages/admin/CategoriesEdit";
 import UserProfile from "./pages/user/UserProfile";
 import Categories from "./pages/user/Categories";
 import Products from "./pages/user/Products";
+import ProductDescription from "./pages/user/ProductDescription";
 
 const App = () => {
   return (
@@ -51,6 +52,10 @@ const App = () => {
           <Route path="/user" element={<UserProfile />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/products/:categoryId" element={<Products />} />
+          <Route
+            path="/product-description/:id"
+            element={<ProductDescription />}
+          />
         </Routes>
         <Footer />
       </Router>

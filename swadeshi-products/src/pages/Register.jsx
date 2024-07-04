@@ -33,7 +33,7 @@ const Register = () => {
   // Define the Zod validation schema
   const schema = z
     .object({
-      UserName: z.string().min(1, { message: "Username is required" }),
+      UserName: z.string().min(1, { message: "Name is required" }),
       email: z.string().min(1, { message: "Email is required" }),
       phoneNumber: z.string().min(1, { message: "Phone number is required" }),
       password: z.string().min(1, { message: "Password is required" }),
@@ -162,7 +162,7 @@ const Register = () => {
                   htmlFor="username"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Username
+                  Name
                 </label>
                 <input
                   onChange={changeUserName}

@@ -36,6 +36,8 @@ export const createProductApi = (formData) =>
 export const getAllProductsApi = (categoryId) =>
   Api.get(`/api/product/get_products/${categoryId}`);
 
+export const getProductsApi = () => Api.get(`/api/product/get-all-products`);
+
 // get single product API
 export const getSingleProductApi = (id) =>
   Api.get(`/api/product/get_product/${id}`);
@@ -67,4 +69,3 @@ export const deleteCategoryApi = (id) =>
 // update user
 export const updateUserApi = (id, formData) =>
   Api.put(`/api/user/update_user/${id}`, formData, config);
-

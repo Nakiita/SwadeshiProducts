@@ -79,10 +79,10 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    to="https://www.intagram.com"
+                    to="https://www.instagram.com"
                     className="hover:underline"
                   >
-                    Instragram
+                    Instagram
                   </Link>
                 </li>
               </ul>
@@ -92,7 +92,11 @@ const Footer = () => {
             <h1 className="mb-6 text-sm font-bold text-gray-900 uppercase">
               Let’s discover the authenticity of Swadeshi Products
             </h1>
-            <form className="flex flex-row gap-4">
+            <form
+              action="https://formspree.io/f/xvgppqvv"
+              method="POST"
+              className="flex flex-row gap-4"
+            >
               <div className="relative">
                 <input
                   type="email"
