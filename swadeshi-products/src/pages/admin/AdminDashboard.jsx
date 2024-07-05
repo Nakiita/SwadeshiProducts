@@ -94,8 +94,8 @@ const AdminDashboard = () => {
   const filteredProducts =
     products && products.length > 0
       ? products.filter((product) =>
-          product.productName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
+        product.productName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
       : [];
 
   return (
@@ -122,9 +122,8 @@ const AdminDashboard = () => {
             />
           </div>
           <div
-            className={`fixed z-10 inset-0 overflow-y-auto ${
-              isModalOpen ? "" : "hidden"
-            }`}
+            className={`fixed z-10 inset-0 overflow-y-auto ${isModalOpen ? "" : "hidden"
+              }`}
           >
             <div className="flex items-center justify-center min-h-screen px-4 text-center">
               <div
@@ -257,16 +256,16 @@ const AdminDashboard = () => {
               <tbody>
                 {filteredProducts.map((item) => (
                   <tr key={item._id} className="border-b">
-                   <td className="py-2 px-4">
-  {item.productImageUrls.map((url, index) => (
-    <img
-      key={index}
-      src={url}
-      className="w-24 h-24 object-cover rounded m-1" // Added m-1 for margin
-      alt={`Product Image ${index + 1}`}
-    />
-  ))}
-</td>
+                    <td className="py-2 px-4">
+                      {item.productImageUrls.map((url, index) => (
+                        <img
+                          key={index}
+                          src={url}
+                          className="w-24 h-24 object-cover rounded m-1" // Added m-1 for margin
+                          alt={`Product Image ${index + 1}`}
+                        />
+                      ))}
+                    </td>
 
                     <td className="py-2 px-4">{item.productName}</td>
                     <td className="py-2 px-4">NPR.{item.productPrice}</td>
