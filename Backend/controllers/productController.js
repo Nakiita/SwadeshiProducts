@@ -80,6 +80,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const createProduct = async (req, res) => {
+
+  console.log(req.files.productImage[1])
   // Step 2: Destructuring data
   const {
     productName,
@@ -96,9 +98,7 @@ const createProduct = async (req, res) => {
     !productPrice ||
     !productDescription ||
     !productCategory ||
-    !productQuantity ||
-    !productImage ||
-    productImage.length === 0
+    !productQuantity
   ) {
     return res.json({
       success: false,
@@ -106,28 +106,34 @@ const createProduct = async (req, res) => {
     });
   }
 
-  try {
-    // Upload images to Cloudinary
-    const imageUploadPromises = productImage.map((image) =>
-      cloudinary.v2.uploader.upload(image.path, {
-        folder: "products",
-        crop: "scale",
-      })
-    );
-    const uploadedImages = await Promise.all(imageUploadPromises);
-
-    // Get URLs of uploaded images
-    const imageUrls = uploadedImages.map((file) => file.secure_url);
-
-    const storage = multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, "uploads/");
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-      },
+  if (!req.files || !req.files.productImage || req.files.productImage.length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Please upload at least one image."
     });
-    const upload = multer({ storage: storage });
+  }
+
+  try {
+
+    var imageUrls = []
+
+    for (let i = 0; i < productImage.length; i++) {
+      const image = productImage[i];
+      const uploadedImage = await cloudinary.v2.uploader.upload(image.path, {
+        folder: "products",
+        crop: "scale"
+      });
+      // Use the original filename (without extension) as the key
+      const key = image.originalFilename.replace(/\.[^/.]+$/, "");
+
+      imageUrls.push(uploadedImage.secure_url);
+      
+    }
+
+
+
+
+
 
     // Save to database
     const newProduct = new Products({
@@ -138,6 +144,8 @@ const createProduct = async (req, res) => {
       productQuantity: productQuantity,
       productImageUrls: imageUrls,
     });
+
+    console.log(newProduct)
 
     await newProduct.save();
 

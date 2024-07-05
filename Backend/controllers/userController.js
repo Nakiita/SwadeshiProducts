@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { sendEmail } = require("../middleware/sendMail");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary");
 
 const securePassword = async (password) => {
   try {
@@ -174,7 +175,7 @@ const forgotPassword = async (req, res) => {
 
 const updateUser = async (req, res) => {
   // step 1 : check incomming data
-  console.log(req);
+  console.log(req.files.profilePicture);
 
   // destructuring data
   const { UserName, email, phoneNumber, address } = req.body;
@@ -236,6 +237,7 @@ const updateUser = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error); 
     res.status(500).json({
       success: false,
       message: "Internal server error",

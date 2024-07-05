@@ -108,7 +108,7 @@ const updateCategory = async (req, res) => {
       const updatedData = {
         categoryName: categoryName,
         slug: slug,
-        categoryImage: uploadedImage.secure_url,
+        categoryImageUrl: uploadedImage.secure_url,
       };
 
       // find category and update

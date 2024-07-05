@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const userSchema = mongoose.Schema({
   profilePicture: {
     type: String,
+    default: null,
   },
   UserName: {
     type: String,
@@ -28,6 +29,7 @@ const userSchema = mongoose.Schema({
   },
   address: {
     type: String,
+    default: null,  
   },
   // is_verified:{
   //     type: Number,

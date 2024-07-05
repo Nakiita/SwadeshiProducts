@@ -31,8 +31,8 @@ const productSchema = new mongoose.Schema({
   //     required: true,
   //   },
 
-  productImageUrl: {
-    type: [],
+  productImageUrls: {
+    type: [String], // Storing an array of Strings
     required: true,
   },
 
