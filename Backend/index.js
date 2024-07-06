@@ -52,6 +52,8 @@ app.use("/api/product", require("./routes/adminRoutes"));
 
 app.use("/api/category", require("./routes/categoriesRoutes"));
 
+app.use('/api/cart', require('./routes/cartRoutes'));
+
 // defining port
 const PORT = process.env.PORT;
 // run the server

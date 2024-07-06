@@ -4,6 +4,7 @@ const Orders = require("../model/orderModel");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const Categories = require("../model/categoriesModel");
 
 // const createProduct = async (req,res) => {
 //     // step 1 : check incomming data
@@ -224,10 +225,28 @@ const getSingleProduct = async (req, res) => {
   const productId = req.params.id;
   try {
     const singleProduct = await Products.findById(productId);
+    const categoryId = singleProduct.productCategory;
+    
+    // Fetch the corresponding category by ID
+    const category = await Categories.findById(categoryId);
+    console.log(category);
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    // Add the category name to the product response
+    const productWithCategoryName = {
+      ...singleProduct._doc,
+      categoryName: category.categoryName, 
+    };
     res.json({
       success: true,
       message: "Single product fetched successfully!",
-      product: singleProduct,
+      product: productWithCategoryName,
     });
   } catch (error) {
     console.log(error);
