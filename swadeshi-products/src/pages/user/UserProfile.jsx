@@ -8,7 +8,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const fetchedUser = getUser();
 
-  // Initial user state setup from fetched user
+  // Initialize user state with fetched user data
   const [user, setUser] = useState({
     id: fetchedUser._id,
     UserName: fetchedUser.UserName,
@@ -19,7 +19,14 @@ const UserProfile = () => {
 
   // State for profile picture and its preview
   const [profilePicture, setProfilePicture] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(fetchedUser.profilePicture || null);
+
+  useEffect(() => {
+    // Set initial state for previewImage if profilePicture is available in fetchedUser
+    if (fetchedUser.profilePicture) {
+      setPreviewImage(fetchedUser.profilePicture);
+    }
+  }, [fetchedUser.profilePicture]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -51,7 +58,7 @@ const UserProfile = () => {
       const res = await updateUserApi(user.id, formData);
       if (res.data.success) {
         toast.success("Profile updated successfully!");
-        navigate("/user-dashboard"); // Adjust the path as necessary
+        navigate("/");
       } else {
         toast.error(res.data.message);
       }
@@ -62,34 +69,31 @@ const UserProfile = () => {
   };
 
   return (
-    <>
-      <div className="bg-gray-50 flex items-center justify-center h-screen">
-        <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-          <div className="flex flex-col items-center pb-4">
-            <label
-              htmlFor="profileImage"
-              className="block mb-2 text-sm font-medium text-gray-700"
-            >
-              User Image
-            </label>
-            <input
-              id="profileImage"
-              type="file"
-              onChange={handleImageUpload}
-              className="block w-full mb-4 p-2 border rounded cursor-pointer"
-              accept="image/*"
+    <div className="bg-gray-50 flex items-center justify-center h-screen">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+        <div className="flex flex-col items-center pb-4">
+          <label htmlFor="profileImage" className="block mb-2 text-sm font-medium text-gray-700">
+            User Image
+          </label>
+          <input
+            id="profileImage"
+            type="file"
+            onChange={handleImageUpload}
+            className="block w-full mb-4 p-2 border rounded cursor-pointer"
+            accept="image/*"
+          />
+          {previewImage && (
+            <img
+              src={previewImage}
+              className="w-24 h-24 rounded-full mt-2"
+              alt="Profile Preview"
             />
-            {previewImage && (
-              <img
-                src={previewImage}
-                className="w-24 h-24 rounded-full mt-2"
-                alt="Profile Preview"
-              />
-            )}
-            <h2 className="mt-2 text-xl font-semibold text-gray-800">
-              User Information
-            </h2>
-          </div>
+          )}
+          <h2 className="mt-2 text-xl font-semibold text-gray-800">
+            User Information
+          </h2>
+        </div>
+
 
           <form onSubmit={handleUpdate}>
             <div className="mb-4">
@@ -178,7 +182,7 @@ const UserProfile = () => {
           </form>
         </div>
       </div>
-    </>
+   
   );
 };
 

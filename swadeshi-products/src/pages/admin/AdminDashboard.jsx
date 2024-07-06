@@ -257,15 +257,14 @@ const AdminDashboard = () => {
                 {filteredProducts.map((item) => (
                   <tr key={item._id} className="border-b">
                     <td className="py-2 px-4">
-                      {item.productImageUrls.map((url, index) => (
+                      
                         <img
-                          key={index}
-                          src={url}
-                          className="w-24 h-24 object-cover rounded m-1" // Added m-1 for margin
-                          alt={`Product Image ${index + 1}`}
+                          
+                          src={item.productImageUrls[0]}
+                          className="w-24 h-24 object-cover rounded m-1" 
+                          // alt={`Product Image ${index + 1}`}
                         />
-                      ))}
-                    </td>
+                                        </td>
 
                     <td className="py-2 px-4">{item.productName}</td>
                     <td className="py-2 px-4">NPR.{item.productPrice}</td>

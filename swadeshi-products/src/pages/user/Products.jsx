@@ -48,11 +48,10 @@ const Products = () => {
                 <div className="max-w-sm bg-white border border-gray-200 shadow-md">
                   <div className="h-60 w-full object-cover overflow-hidden">
                     <img
-                      src={product.imageUrl}
+                      src={product.productImageUrls[0] || product.productImageUrls}
                       alt={product.productName}
-                      onError={(e) =>
-                        (e.target.src = "path_to_default_image.jpg")
-                      }
+
+
                     />
                   </div>
                   <div className="p-4">
