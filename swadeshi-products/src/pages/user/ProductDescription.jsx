@@ -4,10 +4,37 @@ import { getSingleProductApi } from "../../apis/Api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import ProductImages from "../../components/ProductImages";
-
+import { toast } from "react-toastify";
+import { createCartApi } from "../../apis/Api";
 const ProductDescription = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const handleCart = (productId) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user._id) {
+      toast.error("Please log in to add items to the cart.");
+      return;
+    }
+    const data = {
+      userId: user._id,
+      productId: productId,
+      quantity: 1,
+      status: "pending",
+    };
+    createCartApi(data)
+      .then((res) => {
+        if (!res.data.success) {
+          toast.error(res.data.message);
+        } else {
+          toast.success("Product added to cart");
+        }
+      })
+      .catch((err) => {
+        toast.error("Server Error");
+        console.error("Error adding to cart:", err);
+      });
+  };
 
   const [quantity, setQuantity] = useState(1); // Initialize quantity state with a default value of 1
 
@@ -103,7 +130,7 @@ const ProductDescription = () => {
               </div>
               <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-3">
                 <a
-                  href="#"
+                  onClick={() => handleCart(id)}
                   title=""
                   className="text-gray-900 mt-4 sm:mt-0 bg-white border border-black font-medium rounded-lg text-sm px-5 py-2.5 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 flex items-center justify-center"
                   role="button"

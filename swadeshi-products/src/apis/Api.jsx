@@ -69,3 +69,15 @@ export const deleteCategoryApi = (id) =>
 // update user
 export const updateUserApi = (id, formData) =>
   Api.put(`/api/user/update_user/${id}`, formData, config);
+
+export const createCartApi = (data) => Api.post("/api/cart/create_cart", data);
+export const getCartApi = (id) => Api.get(`/api/cart/get_cart/${id}`);
+export const deleteCartApi = (id) =>
+  Api.delete(`/api/cart/remove_cart/${id}`, config);
+
+export const orderCategory = (data) => Api.post(`/api/order/create`, data);
+export const getOrders = () => Api.get(`/api/order/getOrders`, config);
+export const getOrdersByuserId = (userId) =>
+  Api.get(`/api/order/getOrdersByUser/${userId}`);
+export const updateOrdersApi = (orderId, formData) =>
+  Api.put(`/api/order/update_order/${orderId}/status`, formData, config);

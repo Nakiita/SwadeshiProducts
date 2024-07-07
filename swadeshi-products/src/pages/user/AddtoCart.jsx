@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { deleteCartApi, getCartApi, orderCategory } from "../../apis/Apis";
-import KhaltiCheckout from "khalti-checkout-web";
-import config from "../../components/Khalti/khaltiConfig";
+import { deleteCartApi, getCartApi, orderCategory } from "../../apis/Api";
+import { useNavigate } from "react-router-dom";
+
 
 const AddToCart = ({ setCheckoutSuccess }) => {
   const [carts, setCart] = useState([]);
-  let checkout = new KhaltiCheckout(config);
   const [subtotal, setSubtotal] = useState(0);
 
   useEffect(() => {
@@ -86,25 +85,20 @@ const AddToCart = ({ setCheckoutSuccess }) => {
         console.error("Error creating order:", err);
       });
   };
+
   return (
     <>
-      <div className="row">
+      <div className="row" mt-14>
         <div className="col-md-7">
-          <div
-            className="card p-3 mb-3 border"
-            style={{ borderColor: "#D8812F" }}
-          >
+          <div className="card p-3 mb-3 border" style={{ borderColor: "#D8812F" }}>
             <h5 className="mb-4">Your Cart</h5>
             {carts.length > 0 ? (
               carts.map((item) => (
-                <div
-                  key={item._id}
-                  className="cart-item d-flex align-items-center mb-3"
-                >
+                <div key={item._id} className="cart-item d-flex align-items-center mb-3">
                   <div className="cart-product-image me-3">
-                    {item.product?.productImageUrl ? (
+                    {item.product?.productImageUrls ? (
                       <img
-                        src={item.product?.productImageUrl}
+                        src={item.product?.productImageUrls}
                         alt={item.product?.productName}
                         className="img-fluid"
                         style={{ maxWidth: "60px", maxHeight: "60px" }}
@@ -118,7 +112,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
                       {item.product?.productName || "N/A"}
                     </div>
                     <div className="cart-product-category text-muted mb-1">
-                      {item.product?.productCategory || "N/A"}
+                      {item.product?.categoryName || "N/A"}
                     </div>
                     <div className="cart-product-price mb-1">
                       ${item.product?.productPrice || "N/A"}
@@ -141,10 +135,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
         </div>
 
         <div className="col-md-5">
-          <div
-            className="card p-3 mb-3 border"
-            style={{ borderColor: "#D8812F" }}
-          >
+          <div className="card p-3 mb-3 border" style={{ borderColor: "#D8812F" }}>
             <h2 className="mb-4">Proceed to checkout</h2>
             <div className="d-flex justify-content-between mb-3">
               <span>Subtotal:</span>
@@ -161,16 +152,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
             </div>
             <div className="text-center mt-4">
               {carts.length > 0 && ( // Only render if there are items in the cart
-                // <button
-                //   className="btn btn-indigo"
-                //   onClick={handleOrder}
-                // >
-                //   Proceed to Checkout
-                // </button>
-                <button
-                  className="btn btn-sm btn-indigo"
-                  onClick={() => checkout.show({ amount: 10000 })}
-                >
+                <button className="btn btn-sm btn-indigo" onClick={handleOrder}>
                   Checkout
                 </button>
               )}

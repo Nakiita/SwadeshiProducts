@@ -21,6 +21,7 @@ import UserProfile from "./pages/user/UserProfile";
 import Categories from "./pages/user/Categories";
 import Products from "./pages/user/Products";
 import ProductDescription from "./pages/user/ProductDescription";
+import AddToCart from "./pages/user/AddtoCart";
 
 const App = () => {
   return (
@@ -56,6 +57,7 @@ const App = () => {
             path="/product-description/:id"
             element={<ProductDescription />}
           />
+          <Route path="/cart" element={<AddToCart/>} />
         </Routes>
         <Footer />
       </Router>
