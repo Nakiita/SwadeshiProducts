@@ -1,6 +1,6 @@
-
 const Cart = require("../model/cartModel");
 const User = require("../model/userModel");
+const Category = require("../model/categoriesModel");
  
 const createCart = async (req, res) => {
   try {
@@ -52,28 +52,47 @@ const createCart = async (req, res) => {
  
 const getUserCart = async (req, res) => {
   const userId = req.params.id;
- 
+
   try {
     const cart = await Cart.findOne({ user: userId }).populate({
       path: "cartItems.product",
-      select: "productName productCategory productPrice productImageUrl",
+      select: "productName productCategory productPrice productImageUrls",
     });
- 
+
     if (!cart) {
       return res.json({
         success: true,
         message: "User cart is empty",
-        cart: [],
+        cart: []
       });
     }
- 
+
+    const categoryIds = [...new Set(cart.cartItems.map(item => item.product.productCategory))];
+
+    const categories = await Category.find({ _id: { $in: categoryIds } }).select("categoryName");
+
+    const categoryMap = categories.reduce((map, category) => {
+      map[category._id] = category.categoryName;
+      return map;
+    }, {});
+
+    const formattedCartItems = cart.cartItems.map(item => ({
+      product: {
+        productName: item.product.productName,
+        productPrice: item.product.productPrice,
+        productImageUrl: item.product.productImageUrls[0],
+        categoryName: categoryMap[item.product.productCategory] || "Unknown Category",
+      },
+      quantity: item.quantity
+    }));
+
     res.json({
       success: true,
       message: "User cart fetched successfully",
-      cart: cart.cartItems,
+      cart: formattedCartItems
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching user cart:", error);
     res.status(500).json("Server error");
   }
 };

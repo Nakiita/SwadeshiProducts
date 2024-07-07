@@ -229,7 +229,6 @@ const getSingleProduct = async (req, res) => {
     
     // Fetch the corresponding category by ID
     const category = await Categories.findById(categoryId);
-    console.log(category);
 
     if (!category) {
       return res.status(404).json({
