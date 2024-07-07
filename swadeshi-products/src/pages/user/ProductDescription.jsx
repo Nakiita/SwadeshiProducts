@@ -69,7 +69,7 @@ const ProductDescription = () => {
 
   return (
     <>
-      <section className="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased mt-14">
+      <section className="py-8 bg-white md:py-16 antialiased mt-14">
         <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
             <div className="shrink-0 max-w-md lg:max-w-lg mx-auto">
@@ -78,7 +78,7 @@ const ProductDescription = () => {
 
             <div className="mt-6 sm:mt-8 lg:mt-0">
               <h1
-                className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
+                className="text-xl font-semibold text-gray-900 sm:text-2xl"
               >
                 {productName}
               </h1>
@@ -140,8 +140,8 @@ const ProductDescription = () => {
 
                 <a
                   href="#"
-                  title=""
-                  className="text-white mt-4 sm:mt-0 bg-black hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+                  title=""dark
+                  className="text-white mt-4 sm:mt-0 bg-black hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 :bg-primary-600 focus:outline-none flex items-center justify-center"
                   role="button"
                 >
                   Buy Now
