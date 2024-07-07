@@ -99,7 +99,7 @@ const getUserCart = async (req, res) => {
  
 const removeFromCart = async (req, res) => {
   try {
-    const cartItemId = req.params.id; // Corrected parameter name
+    const cartItemId = req.params.  id; // Corrected parameter name
  
     // Find and remove the cart item by its ID
     const cart = await Cart.findOneAndUpdate(
