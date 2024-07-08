@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { deleteCartApi, getCartApi, orderCategory } from "../../apis/Api";
-import { useNavigate } from "react-router-dom";
 
 const AddToCart = ({ setCheckoutSuccess }) => {
   const [carts, setCart] = useState([]);
@@ -34,19 +33,24 @@ const AddToCart = ({ setCheckoutSuccess }) => {
     });
     setSubtotal(total);
   };
-
-  const handleDeleteCart = (id) => {
-    const confirmDialog = window.confirm(
-      "Are you sure you want to remove the item from the cart?"
-    );
+console.log(carts);
+  const handleDeleteCart = (productId) => {
+    console.log(productId);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user._id) {
+      toast.error("Please log in to remove items from the cart.");
+      return;
+    }
+  
+    const confirmDialog = window.confirm("Are you sure you want to delete the item from the cart?");
     if (!confirmDialog) {
       return;
     } else {
-      deleteCartApi(id)
+      deleteCartApi(user._id, productId)
         .then((res) => {
-          if (res.data.success === true) {
+          if (res.data.success) {
             toast.success(res.data.message);
-            window.location.reload(); 
+            setCart(carts.filter(item => item._id !== productId)); // Update state to remove item
           } else {
             toast.error(res.data.message);
           }
@@ -57,7 +61,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
         });
     }
   };
-
+  
   const handleSelectAll = () => {
     if (selectedItems.length === carts.length) {
       setSelectedItems([]);
@@ -182,7 +186,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
                       <td className="py-4 px-6">
                         <button
                           className="text-black hover:text-black-700"
-                          onClick={() => handleDeleteCart(item._id)}
+                          onClick={() => handleDeleteCart(item.product.productId)}
                         >
                           <FontAwesomeIcon icon={faTrash} />
                         </button>
