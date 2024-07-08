@@ -6,7 +6,7 @@ const OrderConfirmation = () => {
     transactionDate: 'Monday, 27th May, 2024',
     email: 'ram@sp.test',
     paymentMethod: 'Khalti',
-    items: [
+    items:[
       { name: 'Craft Tea Tray Vintage Bamboo Storage Basket - Bamboo Yellow', price: 'Rs. 2500', quantity: 1 },
       { name: '3 Tier Salt Box by Totally Bamboo', price: 'Rs. 3000', quantity: 1 },
       { name: 'Stoneware Ceramic products', price: 'Rs. 500', quantity: 1 },

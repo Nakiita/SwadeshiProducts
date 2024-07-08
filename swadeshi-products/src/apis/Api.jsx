@@ -81,3 +81,4 @@ export const getOrdersByuserId = (userId) =>
   Api.get(`/api/order/getOrdersByUser/${userId}`);
 export const updateOrdersApi = (orderId, formData) =>
   Api.put(`/api/order/update_order/${orderId}/status`, formData, config);
+

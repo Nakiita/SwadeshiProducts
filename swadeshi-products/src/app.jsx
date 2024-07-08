@@ -24,6 +24,7 @@ import ProductDescription from "./pages/user/ProductDescription";
 import AddToCart from "./pages/user/AddtoCart";
 import BillingPage from "./pages/user/BillingPage";
 import OrderConfirmation from "./pages/user/OrderConfirmation";
+import OrdersPage from "./pages/user/Order";
 
 const App = () => {
   return (
@@ -60,9 +61,9 @@ const App = () => {
             element={<ProductDescription />}
           />
           <Route path="/cart" element={<AddToCart/>} />
-          <Route path = "/billing-page/:subtotal" element={<BillingPage />} />
+          <Route path = "/billing-page" element={<BillingPage />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
-          
+          <Route path="/orders" element={<OrdersPage />} />
         </Routes>
         <Footer />
       </Router>
