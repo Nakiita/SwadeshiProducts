@@ -1,32 +1,48 @@
 const mongoose = require('mongoose');
 
-const orderSchema = new mongoose.Schema({
+const cartItemSchema = new mongoose.Schema({
+    product: {
+        productName: { type: String, required: true },
+        productPrice: { type: Number, required: true }
+    },
+    quantity: { type: Number, required: true }
+});
 
-    // orderid, userid, productid, quantity, 
-    // price, totalprice, orderdate, status, cartitems
-    orderId : {
-        type : String,
-        required : true,
-        default : "ORDER-NO-" + Math.floor(Math.random() * 1000000)
+const orderSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        required: true,
     },
-    userId : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "users",
-        required : true,
+    country: {
+        type: String,
+        required: true,
     },
-    productId : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "products",
-        required : true,
+    state: {
+        type: String,
+        required: true,
     },
-    quantity : {
-        type : Number,
-        required : true,
+    address: {
+        type: String,
+        required: true,
     },
-    status : {
-        type : String,
-        required : true,
-        default : "pending",
+    paymentMethod: {
+        type: String,
+        required: true,
+    },
+    cart: [cartItemSchema],
+    subtotal: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true,
+        default: "pending",
+    },
+    orderDate: {
+        type: Date,
+        default: Date.now
     }
 });
 
