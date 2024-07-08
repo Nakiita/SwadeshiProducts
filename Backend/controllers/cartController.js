@@ -56,7 +56,7 @@ const getUserCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: userId }).populate({
       path: "cartItems.product",
-      select: "productName productCategory productPrice productImageUrls",
+      select: "productId productName productCategory productPrice productImageUrls",
     });
 
     if (!cart) {
@@ -78,6 +78,7 @@ const getUserCart = async (req, res) => {
 
     const formattedCartItems = cart.cartItems.map(item => ({
       product: {
+        productId: item.product._id,
         productName: item.product.productName,
         productPrice: item.product.productPrice,
         productImageUrl: item.product.productImageUrls[0],
@@ -98,36 +99,37 @@ const getUserCart = async (req, res) => {
 };
  
 const removeFromCart = async (req, res) => {
+  const { userid, productid } = req.params;
   try {
-    const cartItemId = req.params.  id; // Corrected parameter name
- 
-    // Find and remove the cart item by its ID
     const cart = await Cart.findOneAndUpdate(
-      { "cartItems._id": cartItemId }, // Find cart item by its ID
-      { $pull: { cartItems: { _id: cartItemId } } }, // Remove the cart item
-      { new: true } // Return the updated cart
+      { user: userid },
+      { $pull: { cartItems: { product: productid } } },
+      { new: true }
     );
- 
+
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "Item not found in cart",
+        message: "Cart not found",
       });
     }
- 
+
     res.status(200).json({
       success: true,
       message: "Item removed from cart successfully",
-      cart: cart.cartItems, // Return updated cart items
+      cart: cart.cartItems,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error removing item from cart:", error);
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
   }
 };
+
+
+
  
 const updateCartItemQuantity = async (req, res) => {
   const { itemId, newQuantity } = req.body;

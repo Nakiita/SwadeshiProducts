@@ -6,7 +6,7 @@ const { createCart, getUserCart, removeFromCart, updateCartItemQuantity  } = req
 // // Create a cart
 router.post('/create_cart', createCart);
 router.get('/get_cart/:id', getUserCart);
-router.delete("/remove_cart/:id",removeFromCart)
+router.delete("/remove_cart/:userid/:productid",removeFromCart)
 router.put("/update_cart/:id",  updateCartItemQuantity)
 
 module.exports = router;
