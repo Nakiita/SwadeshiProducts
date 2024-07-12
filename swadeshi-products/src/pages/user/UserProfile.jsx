@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const UserProfile = () => {
   const navigate = useNavigate();
   const fetchedUser = getUser();
-
   // Initialize user state with fetched user data
   const [user, setUser] = useState({
     id: fetchedUser._id,
@@ -16,22 +15,18 @@ const UserProfile = () => {
     phoneNumber: fetchedUser.phoneNumber,
     address: fetchedUser.address,
   });
-
   // State for profile picture and its preview
   const [profilePicture, setProfilePicture] = useState(null);
   const [previewImage, setPreviewImage] = useState(fetchedUser.profilePicture || null);
-
   useEffect(() => {
     // Set initial state for previewImage if profilePicture is available in fetchedUser
     if (fetchedUser.profilePicture) {
       setPreviewImage(fetchedUser.profilePicture);
     }
   }, [fetchedUser.profilePicture]);
-
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -39,21 +34,17 @@ const UserProfile = () => {
       setPreviewImage(URL.createObjectURL(file));
     }
   };
-
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("UserName", user.UserName);
     formData.append("email", user.email);
     formData.append("phoneNumber", user.phoneNumber);
     formData.append("address", user.address);
-
     // Append profile picture if it exists
     if (profilePicture) {
       formData.append("profilePicture", profilePicture);
     }
-
     try {
       const res = await updateUserApi(user.id, formData);
       if (res.data.success) {
@@ -67,7 +58,6 @@ const UserProfile = () => {
       toast.error("Failed to update profile. Internal Server Error!");
     }
   };
-
   return (
     <div className="bg-gray-50 flex items-center justify-center h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
@@ -93,8 +83,6 @@ const UserProfile = () => {
             User Information
           </h2>
         </div>
-
-
           <form onSubmit={handleUpdate}>
             <div className="mb-4">
               <label
@@ -112,7 +100,6 @@ const UserProfile = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -129,7 +116,6 @@ const UserProfile = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-
             <div className="mb-4">
               <label
                 htmlFor="phone"
@@ -146,7 +132,6 @@ const UserProfile = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-
             <div className="mb-6">
               <label
                 htmlFor="address"
@@ -163,7 +148,6 @@ const UserProfile = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-
             <div className="flex items-center justify-between">
               <button
                 type="button"
@@ -174,7 +158,7 @@ const UserProfile = () => {
               </button>
               <button
                 type="submit"
-                className="bg-blue-500 text-white rounded py-2 px-4 hover:bg-blue-600"
+                className="bg-black text-white rounded py-2 px-4 hover:bg-black"
               >
                 Save
               </button>
@@ -182,7 +166,6 @@ const UserProfile = () => {
           </form>
         </div>
       </div>
-   
   );
 };
 

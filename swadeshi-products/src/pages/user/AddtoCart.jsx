@@ -33,7 +33,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
     });
     setSubtotal(total);
   };
-console.log(carts);
+  console.log(carts);
   const handleDeleteCart = (productId) => {
     console.log(productId);
     const user = JSON.parse(localStorage.getItem("user"));
@@ -41,8 +41,10 @@ console.log(carts);
       toast.error("Please log in to remove items from the cart.");
       return;
     }
-  
-    const confirmDialog = window.confirm("Are you sure you want to delete the item from the cart?");
+
+    const confirmDialog = window.confirm(
+      "Are you sure you want to delete the item from the cart?"
+    );
     if (!confirmDialog) {
       return;
     } else {
@@ -50,7 +52,7 @@ console.log(carts);
         .then((res) => {
           if (res.data.success) {
             toast.success(res.data.message);
-            setCart(carts.filter(item => item._id !== productId)); // Update state to remove item
+            setCart(carts.filter((item) => item._id !== productId)); // Update state to remove item
           } else {
             toast.error(res.data.message);
           }
@@ -61,20 +63,12 @@ console.log(carts);
         });
     }
   };
-  
+
   const handleSelectAll = () => {
     if (selectedItems.length === carts.length) {
       setSelectedItems([]);
     } else {
       setSelectedItems(carts.map((item) => item._id));
-    }
-  };
-
-  const handleSelectItem = (id) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
     }
   };
 
@@ -133,16 +127,17 @@ console.log(carts);
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                   <tr>
                     <th scope="col" className="py-3 px-6">
-                      <input
-                        type="checkbox"
-                        onChange={handleSelectAll}
-                        checked={selectedItems.length === carts.length}
-                      />
+                      S.N
                     </th>
-                    <th scope="col" className="py-3 px-6">S.N</th>
-                    <th scope="col" className="py-3 px-6">Products</th>
-                    <th scope="col" className="py-3 px-6">Qty</th>
-                    <th scope="col" className="py-3 px-6">Price</th>
+                    <th scope="col" className="py-3 px-6">
+                      Products
+                    </th>
+                    <th scope="col" className="py-3 px-6">
+                      Qty
+                    </th>
+                    <th scope="col" className="py-3 px-6">
+                      Price
+                    </th>
                     <th scope="col" className="py-3 px-6">
                       <FontAwesomeIcon icon={faTrash} />
                     </th>
@@ -150,14 +145,10 @@ console.log(carts);
                 </thead>
                 <tbody>
                   {carts.map((item, index) => (
-                    <tr key={item._id} className="bg-white border-b hover:bg-gray-100">
-                      <td className="py-4 px-6">
-                        <input
-                          type="checkbox"
-                          checked={selectedItems.includes(item._id)}
-                          onChange={() => handleSelectItem(item._id)}
-                        />
-                      </td>
+                    <tr
+                      key={item._id}
+                      className="bg-white border-b hover:bg-gray-100"
+                    >
                       <td className="py-4 px-6">{index + 1}</td>
                       <td className="py-4 px-6 flex items-center">
                         <img
@@ -165,7 +156,9 @@ console.log(carts);
                           alt={item.product?.productName}
                           className="w-10 h-10 rounded-full object-cover mr-4"
                         />
-                        {item.product?.productName || "N/A"}
+                        <p className="w-52">
+                          {item.product?.productName || "N/A"}
+                        </p>
                       </td>
                       <td className="py-4 px-6 ">
                         <button
@@ -182,11 +175,15 @@ console.log(carts);
                           <FontAwesomeIcon icon={faPlus} />
                         </button>
                       </td>
-                      <td className="py-4 px-6">Rs {item.product?.productPrice}</td>
+                      <td className="py-4 px-6">
+                        Rs {item.product?.productPrice}
+                      </td>
                       <td className="py-4 px-6">
                         <button
                           className="text-black hover:text-black-700"
-                          onClick={() => handleDeleteCart(item.product.productId)}
+                          onClick={() =>
+                            handleDeleteCart(item.product.productId)
+                          }
                         >
                           <FontAwesomeIcon icon={faTrash} />
                         </button>
@@ -196,7 +193,9 @@ console.log(carts);
                 </tbody>
               </table>
             ) : (
-              <div className="text-center text-gray-500">No items in the cart.</div>
+              <div className="text-center text-gray-500">
+                No items in the cart.
+              </div>
             )}
           </div>
         </div>
@@ -214,9 +213,13 @@ console.log(carts);
               </thead>
               <tbody className="bg-white border-b hover:bg-gray-100">
                 {carts.map((item) => (
-                  <tr key={item._id} >
-                    <td className="py-4 px-6">{item.product?.productName || "N/A"}</td>
-                    <td className="py-4 px-6">Rs {item.product?.productPrice || "N/A"}</td>
+                  <tr key={item._id}>
+                    <td className="py-4 px-6 w-24">
+                      {item.product?.productName || "N/A"}
+                    </td>
+                    <td className="py-4 px-6 ">
+                      Rs {item.product?.productPrice || "N/A"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -227,39 +230,39 @@ console.log(carts);
             </div>
             <div className="flex justify-between mb-3">
               <span>Shipping:</span>
-              <span>Free</span>
+              <span>Rs.100</span>
             </div>
             <p>Apply Coupon code</p>
             <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-3">
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              placeholder="COUPON CODE"
-              className="mt-4 sm:mt-0 bg-white border border-black font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 w-full"
-            />
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="COUPON CODE"
+                className="mt-4 sm:mt-0 bg-white border border-black font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 w-full"
+              />
 
-                <a
-                  href="#"
-                  title=""dark
-                  className="text-white mt-4 sm:mt-0 bg-black hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 :bg-primary-600 focus:outline-none flex items-center justify-center"
-                  role="button"
-                >
-                  APPLY
-                </a>
+              <a
+                href="#"
+                title=""
+                dark
+                className="text-white mt-4 sm:mt-0 bg-black hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 :bg-primary-600 focus:outline-none flex items-center justify-center"
+                role="button"
+              >
+                APPLY
+              </a>
+            </div>
 
-
-              </div>
             <hr className="my-3" />
             <div className="flex justify-between text-lg font-semibold">
               <span>Total:</span>
-              <span>Rs {subtotal}</span>
+              <span>Rs {subtotal + 100}</span>
             </div>
             <div className="text-center mt-4">
               {carts.length > 0 && (
                 <a
-                className="w-full mx-auto text-white mt-4 sm:mt-0 bg-black hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 :bg-primary-600 focus:outline-none flex items-center justify-center"
-                href={`/billing-page`}
+                  className="w-full mx-auto text-white mt-4 sm:mt-0 bg-black hover:bg-gray-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 :bg-primary-600 focus:outline-none flex items-center justify-center"
+                  href={`/billing-page`}
                 >
                   Checkout
                 </a>

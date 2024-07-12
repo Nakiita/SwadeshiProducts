@@ -24,7 +24,8 @@ import ProductDescription from "./pages/user/ProductDescription";
 import AddToCart from "./pages/user/AddtoCart";
 import BillingPage from "./pages/user/BillingPage";
 import OrderConfirmation from "./pages/user/OrderConfirmation";
-import OrdersPage from "./pages/user/Order";
+import OrdersPage from "./pages/user/OrderHistory";
+import OrderHistory from "./pages/user/OrderHistory";
 
 const App = () => {
   return (
@@ -63,7 +64,7 @@ const App = () => {
           <Route path="/cart" element={<AddToCart/>} />
           <Route path = "/billing-page" element={<BillingPage />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
-          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/order-history" element={<OrderHistory />} />
         </Routes>
         <Footer />
       </Router>

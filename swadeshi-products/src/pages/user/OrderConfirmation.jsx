@@ -1,56 +1,122 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getCartApi, getOrders } from "../../apis/Api";
+import getUser from "../../utils/getUser";
+import { toast } from "react-toastify";
 
 const OrderConfirmation = () => {
-  // Sample data for demonstration
-  const orderDetails = {
-    transactionDate: 'Monday, 27th May, 2024',
-    email: 'ram@sp.test',
-    paymentMethod: 'Khalti',
-    items:[
-      { name: 'Craft Tea Tray Vintage Bamboo Storage Basket - Bamboo Yellow', price: 'Rs. 2500', quantity: 1 },
-      { name: '3 Tier Salt Box by Totally Bamboo', price: 'Rs. 3000', quantity: 1 },
-      { name: 'Stoneware Ceramic products', price: 'Rs. 500', quantity: 1 },
-    ],
-    subtotal: 'Rs. 6000.00',
-    shippingCharge: 'Rs. 100',
-    discount: 'Rs. 0',
-    grandTotal: 'Rs. 6100'
+  const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [carts, setCart] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const user = getUser();
+  const currentDate = new Date().toLocaleString();
+  const [order, setOrders] = useState("");
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("user");
+    const parsedUserData = JSON.parse(storedUserData);
+    const userId = parsedUserData._id;
+
+    getCartApi(userId)
+      .then((res) => {
+        setCart(res.data.cart);
+        calculateSubtotal(res.data.cart);
+      })
+      .catch((error) => {
+        console.error("Error fetching user cart:", error);
+        toast.error("Failed to fetch user cart");
+      });
+  }, []);
+
+  const calculateSubtotal = (cartItems) => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += (item.product?.productPrice || 0) * (item.quantity || 0);
+    });
+    setSubtotal(total);
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
-        <h1 className="text-xl font-bold mb-8">Thanks for your order!</h1>
-        <p>The order confirmation has been sent to <span className="font-semibold">{orderDetails.email}</span></p>
-        <div className="mt-4">
-          <h2 className="font-semibold text-lg">Transaction Date</h2>
-          <p>{orderDetails.transactionDate}</p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center mt-24">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-2">Thanks for your order!</h1>
+          <p className="mb-6 text-gray-400 text-xs">
+            The order confirmation has been sent to {user.email}
+          </p>
         </div>
-        <div className="mt-4">
-          <h2 className="font-semibold text-lg">Payment Method</h2>
-          <p>{orderDetails.paymentMethod}</p>
+
+        <div className="mb-4">
+          <p className="font-bold">Transaction Date</p>
+          <p className="text-gray-400">{currentDate}</p>
+          <hr className="my-3" />
         </div>
-        <div className="mt-6">
-          <h2 className="font-semibold text-lg">Your Order</h2>
-          {orderDetails.items.map((item, index) => (
-            <div key={index} className="mt-2">
-              <p>{item.name}</p>
-              <p>{item.price} x {item.quantity}</p>
+        {/* Display order items as a list */}
+        <div className="mb-4">
+          <h2 className=" font-semibold mb-2 ">TRACK ORDER</h2>
+          <p>Your Order</p>
+          <hr className="my-3" />
+          {carts.map((item) => (
+            <div
+              key={item._id}
+              className="flex items-center justify-between py-2"
+            >
+              <div className="flex items-center">
+                <img
+                  src={item.product?.productImageUrl}
+                  alt={item.product?.productName}
+                  className="w-10 h-10 rounded-full object-cover mr-4"
+                />
+                <div className="w-64 text-xs">
+                  {item.product?.productName || "N/A"}
+                  <div>x{item.quantity}</div>
+                </div>
+              </div>
+
+              <div>Rs {item.product?.productPrice}</div>
             </div>
           ))}
         </div>
-        <div className="mt-6">
-          <p className="font-semibold">Subtotal: {orderDetails.subtotal}</p>
-          <p className="font-semibold">Shipping Charge: {orderDetails.shippingCharge}</p>
-          <p className="font-semibold">Discount: {orderDetails.discount}</p>
-          <p className="font-semibold text-lg">Grand Total: {orderDetails.grandTotal}</p>
+        <hr className="my-3" />
+
+        <div className="mb-6">
+          <div className="flex justify-between">
+            <p className="">Subtotal </p>
+            <p> Rs. {subtotal}</p>
+          </div>
+          <hr className="my-3" />
+          <div className="flex justify-between">
+            <p className="text-gray-400">Shipping Charge </p>
+            <p className="text-gray-400">Rs.100</p>
+          </div>
+          <div className="flex justify-between text-gray-400">
+            <p className="mb-1 ">Discount </p>
+            <p>Rs. 0 </p>
+          </div>
+          <div className="flex justify-between text-gray-400">
+            <p className="mb-1 ">Extra Charge </p>
+            <p>Rs. 100 </p>
+          </div>
+
+          <hr className="my-3" />
+          <div className="flex justify-between">
+            <p>Grand Total </p>
+            <p className="font-bold"> Rs. {subtotal + 200}</p>
+          </div>
         </div>
-        <button className="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Continue Shopping
-        </button>
+
+        <div className="flex justify-center space-x-4">
+          <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+            Order History
+          </button>
+          <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+            Continue Shopping
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default OrderConfirmation;

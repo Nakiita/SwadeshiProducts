@@ -21,7 +21,7 @@ const ProductImages = ({productImages}) => {
         <div>
           <img
             src={productImages[currentImage]}
-            className="w-[40rem] h-[20rem] rounded-md cursor-pointer object-cover"
+            className="w-[30rem] h-[30rem] rounded-md cursor-pointer object-cover"
             alt="Displayed Product"
           />
         </div>
