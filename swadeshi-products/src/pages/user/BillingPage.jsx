@@ -221,7 +221,7 @@ const BillingPage = () => {
               <div className="pt-4">
                 <h3 className="text-sm font-bold text-gray-900">Total</h3>
                 {/* Assuming total is static for demonstration */}
-                <p className="text-sm text-gray-900">Rs {subtotal}</p>
+                <p className="text-sm text-gray-900">Rs {subtotal + 100}</p>
               </div>
               <button
                 onClick={handleUpdate}

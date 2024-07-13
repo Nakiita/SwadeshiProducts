@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import OrderCard from "../../components/OrderCard";
 
 const OrderHistory = () => {
+
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
@@ -43,6 +44,7 @@ const OrderHistory = () => {
           <OrderCard
             key={order._id}
             product={order.product}
+            user = {user}
             subtotal={subtotal}
           />
         ))}

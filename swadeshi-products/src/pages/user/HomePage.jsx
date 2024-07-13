@@ -1,101 +1,125 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getProductsApi, createCartApi } from "../../apis/Api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShoppingBag,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import { Banner } from "../../components/Banner";
-import ProductImages from "../../components/ProductImages";
 
 const HomePage = () => {
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getProductsApi();
+        if (response.data && Array.isArray(response.data.products)) {
+          setProducts(response.data.products);
+        } else {
+          toast.error("Failed to load products");
+          console.error("Unexpected response structure:", response.data);
+        }
+      } catch (error) {
+        toast.error("Error fetching products");
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleCart = async (productId, navigateAfter = false) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user._id) {
+      toast.error("Please log in to add items to the cart.");
+      return;
+    }
+
+    const data = {
+      userId: user._id,
+      productId,
+      quantity: 1,
+      status: "pending",
+    };
+
+    try {
+      const res = await createCartApi(data);
+      if (res.data.success) {
+        toast.success("Product added to cart");
+        if (navigateAfter) {
+          navigate("/cart");
+        }
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (err) {
+      toast.error("Server Error");
+      console.error("Error adding to cart:", err);
+    }
+  };
+
+  const shortenProductName = (name) => {
+    const maxLength = 25;
+    return name.length > maxLength
+      ? `${name.substring(0, maxLength)}...`
+      : name;
+  };
+
   return (
     <>
-      <div className="mt-5">
-        {/* Top Section */}
-
-        <Banner />
-
-        {/* Discover Authenticity Section */}
-        <h3 className="mt-8 mb-4 text-3xl font-semibold">
-          Discover Authenticity
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+      <Banner />
+      <h3 className="mt-8 mb-4 text-3xl font-semibold">
+        Discover Authenticity
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+        {products.length > 0 ? (
+          products.slice(0, 3).map((product, index) => (
+            <div
+              key={index}
+              className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
+            >
               <img
-                src="../assets/images/dhaka.jpg"
-                className="w-full h-80 object-cover"
-                alt="Dhaka"
+                src={product.productImageUrls[0] || product.productImageUrls}
+                alt={product.productName}
+                className="h-72 w-full object-cover"
               />
-              <div className="p-4">
-                <h5 className="text-xl font-semibold mb-2">Dhaka</h5>
+              <div className="p-2">
+                <h5 className="text-xl font-semibold mb-2 truncate">
+                  {shortenProductName(product.productName)}
+                </h5>
                 <div className="flex justify-between items-center">
-                  <p className="text-lg font-medium">Rs. 1300</p>
+                  <p className="text-lg font-medium">
+                    Rs. {product.productPrice}
+                  </p>
                   <div className="flex space-x-4">
                     <FontAwesomeIcon
                       icon={faShoppingCart}
-                      className="text-gray-600"
+                      className="text-gray-600 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCart(product._id);
+                      }}
                     />
                     <FontAwesomeIcon
                       icon={faShoppingBag}
-                      className="text-gray-600"
+                      className="text-gray-600 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCart(product._id, true);
+                      }}
                     />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-              <img
-                src="../assets/images/singing-bowl.jpg"
-                className="w-full h-80 object-cover"
-                alt="Singing Bowl"
-              />
-              <div className="p-4">
-                <h5 className="text-xl font-semibold mb-2">Singing Bowl</h5>
-                <div className="flex justify-between items-center">
-                  <p className="text-lg font-medium">Rs. 3000</p>
-                  <div className="flex space-x-4">
-                    <FontAwesomeIcon
-                      icon={faShoppingCart}
-                      className="text-gray-600"
-                    />
-                    <FontAwesomeIcon
-                      icon={faShoppingBag}
-                      className="text-gray-600"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-              <img
-                src="../assets/images/pottery-set.jpg"
-                className="w-full h-80 object-cover"
-                alt="Pottery Set"
-              />
-              <div className="p-4">
-                <h5 className="text-xl font-semibold mb-2">Pottery Set</h5>
-                <div className="flex justify-between items-center">
-                  <p className="text-lg font-medium">Rs. 1500</p>
-                  <div className="flex space-x-4">
-                    <FontAwesomeIcon
-                      icon={faShoppingCart}
-                      className="text-gray-600"
-                    />
-                    <FontAwesomeIcon
-                      icon={faShoppingBag}
-                      className="text-gray-600"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          ))
+        ) : (
+          <p>No products found.</p>
+        )}
       </div>
     </>
   );

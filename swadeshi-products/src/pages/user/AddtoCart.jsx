@@ -6,7 +6,6 @@ import { deleteCartApi, getCartApi, orderCategory } from "../../apis/Api";
 
 const AddToCart = ({ setCheckoutSuccess }) => {
   const [carts, setCart] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [couponCode, setCouponCode] = useState("");
 
@@ -33,9 +32,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
     });
     setSubtotal(total);
   };
-  console.log(carts);
   const handleDeleteCart = (productId) => {
-    console.log(productId);
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || !user._id) {
       toast.error("Please log in to remove items from the cart.");
@@ -62,57 +59,6 @@ const AddToCart = ({ setCheckoutSuccess }) => {
           toast.error("Failed to delete cart item");
         });
     }
-  };
-
-  const handleSelectAll = () => {
-    if (selectedItems.length === carts.length) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(carts.map((item) => item._id));
-    }
-  };
-
-  const handleOrder = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user || !user._id) {
-      toast.error("Please log in to add items to the cart.");
-      return;
-    }
-
-    orderCategory({
-      userId: user._id,
-      cartItems: carts.map((cartItem) => ({
-        productId: cartItem.product._id,
-        quantity: cartItem.quantity,
-      })),
-      total: subtotal,
-    })
-      .then((res) => {
-        if (res.data.success === false) {
-          toast.error(res.data.message);
-        } else {
-          toast.success(res.data.message);
-          setCheckoutSuccess(true);
-        }
-      })
-      .catch((err) => {
-        toast.error("Server Error");
-        console.error("Error creating order:", err);
-      });
-  };
-
-  const handleQuantityChange = (id, delta) => {
-    const updatedCarts = carts.map((item) => {
-      if (item._id === id) {
-        const newQuantity = item.quantity + delta;
-        if (newQuantity > 0) {
-          return { ...item, quantity: newQuantity };
-        }
-      }
-      return item;
-    });
-    setCart(updatedCarts);
-    calculateSubtotal(updatedCarts);
   };
 
   return (
@@ -161,19 +107,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
                         </p>
                       </td>
                       <td className="py-4 px-6 ">
-                        <button
-                          className="text-gray-500 hover:text-gray-700"
-                          onClick={() => handleQuantityChange(item._id, -1)}
-                        >
-                          <FontAwesomeIcon icon={faMinus} />
-                        </button>
                         <span className="mx-2">{item.quantity}</span>
-                        <button
-                          className="text-gray-500 hover:text-gray-700"
-                          onClick={() => handleQuantityChange(item._id, 1)}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
                       </td>
                       <td className="py-4 px-6">
                         Rs {item.product?.productPrice}
