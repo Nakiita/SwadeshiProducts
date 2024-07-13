@@ -3,9 +3,6 @@ const router = require('express').Router();
 
 const orderController = require('../controllers/orderController.js');
 // const { authGuardAdmin } = require('../middleware/authGuard.js');
-
-
-
 router.post('/create', orderController.createOrderInfo)
 // router.get('/getOrders', authGuardAdmin, orderController.getALlOrder)
 router.get('/getOrders', orderController.getAllOrder)
