@@ -26,6 +26,7 @@ import BillingPage from "./pages/user/BillingPage";
 import OrderConfirmation from "./pages/user/OrderConfirmation";
 import OrdersPage from "./pages/user/OrderHistory";
 import OrderHistory from "./pages/user/OrderHistory";
+import Review from "./pages/user/Review";
 
 const App = () => {
   return (
@@ -65,6 +66,8 @@ const App = () => {
           <Route path = "/billing-page" element={<BillingPage />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
           <Route path="/order-history" element={<OrderHistory />} />
+
+          <Route path="/review" element={<Review/>} />
         </Routes>
         <Footer />
       </Router>

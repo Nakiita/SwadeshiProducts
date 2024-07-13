@@ -82,3 +82,5 @@ export const getOrdersByuserId = (userId) =>
 export const updateOrdersApi = (orderId, formData) =>
   Api.put(`/api/order/update_order/${orderId}/status`, formData, config);
 
+
+export const createReviewApi = (formData) => Api.post(`/api/review/create`, formData);

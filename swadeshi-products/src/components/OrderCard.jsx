@@ -7,6 +7,10 @@ const OrderCard = ({ product,user }) => {
     navigate(`/product-description/${id}`);
   };
 
+const handleReview = () =>{
+  navigate ('/review');
+}
+
   return (
     <div className="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row mb-6">
       {/* Product Image and Details */}
@@ -62,7 +66,9 @@ const OrderCard = ({ product,user }) => {
           >
             View Details
           </button>
-          <button className="bg-black hover:bg-opacity-90 text-white py-1 px-3 rounded text-xs mx-1">
+          <button 
+          onClick={handleReview}
+          className="bg-black hover:bg-opacity-90 text-white py-1 px-3 rounded text-xs mx-1">
             Review
           </button>
         </div>
