@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-
 import { getUserApi } from "../apis/Api";
 import getUser from "../utils/getUser";
 
 const Users = ({ data, currentUser }) => {
   const [userData, setUserData] = useState(null);
   const senderId = data.members.find((id) => id !== currentUser);
-  const user=getUser();
 
   useEffect(() => {
     const getSenderData = async () => {
@@ -20,12 +18,14 @@ const Users = ({ data, currentUser }) => {
     getSenderData();
   }, [senderId]);
 
+  console.log(userData);
+
   return (
     <>
       <div className="flex items-center gap-4 mb-4">
-        <img className="w-10 h-10 rounded-full" src="" alt="" />
+        <img className="w-10 h-10 rounded-full" src={userData?.previewImage} alt="" />
         <div className="font-medium">
-          <div>{userData?.username}</div>
+          <div>{userData?.UserName}</div>
           <div className="text-sm text-gray-500">Joined in August 2014</div>
         </div>
       </div>

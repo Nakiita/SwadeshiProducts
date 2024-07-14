@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createMessagesApi, getMessagesApi } from "../apis/Api";
-import getUser from "../../utils/getUser";
+import getUser from "../utils/getUser";
+
 
 const AdminChatBox = ({
   chat,
@@ -35,7 +36,7 @@ const AdminChatBox = ({
   }, [messages]);
 
   useEffect(() => {
-    if (receivedMessage !== null && receivedMessage.chatId === chat?._id) {
+    if (receivedMessage !== null && receivedMessage?.chatId === chat?._id) {
       setMessages((prevMessages) => [...prevMessages, receivedMessage]);
     }
   }, [receivedMessage, chat?._id]);
@@ -89,7 +90,7 @@ const AdminChatBox = ({
         <div>
           <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300">
             <h1 className="text-lg font-semibold">
-              {userData ? userData.username : "User"}
+              {userData ? userData.UserName : "User"}
             </h1>
             <span className="text-sm text-gray-500">Active 20m ago</span>
           </div>
@@ -98,21 +99,21 @@ const AdminChatBox = ({
               <div
                 key={index}
                 className={`flex ${
-                  message.senderId === currentUser
+                  message?.senderId === currentUser
                     ? "justify-end"
                     : "justify-start"
                 }`}
               >
                 <div
                   className={`max-w-xs px-4 py-2 my-1 rounded-lg ${
-                    message.senderId === currentUser
+                    message?.senderId === currentUser
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-black"
                   }`}
                 >
-                  <p>{message.text}</p>
+                  <p>{message?.text}</p>
                   <span className="text-xs text-gray-500">
-                    {formatDate(message.createdAt)}
+                    {formatDate(message?.createdAt)}
                   </span>
                 </div>
               </div>

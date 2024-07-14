@@ -28,6 +28,7 @@ import OrdersPage from "./pages/user/OrderHistory";
 import OrderHistory from "./pages/user/OrderHistory";
 import Review from "./pages/user/Review";
 import ChatBox from "./pages/user/Chat";
+import AdminChat from "./pages/admin/AdminChat";
 
 const App = () => {
   return (
@@ -70,6 +71,7 @@ const App = () => {
 
           <Route path="/review" element={<Review/>} />
           <Route path="/chat" element = {<ChatBox/>}/>
+          <Route path="/admin-chat" element = {<AdminChat/>}/>
         </Routes>
         <Footer />
       </Router>
