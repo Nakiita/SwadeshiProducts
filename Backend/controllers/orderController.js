@@ -1,10 +1,12 @@
 const Orders = require("../model/orderModel");
- 
+const Users = require("../model/userModel"); 
+
 const createOrderInfo = async (req, res) => {
-  const { userId, cart, address, country, paymentMethod,  state, subtotal } = req.body;
-  console.log(req.body);
- 
+  const { userId, cart, address, country, paymentMethod, state, subtotal } =
+    req.body;
+
   try {
+    // Creating a new order
     const newOrder = new Orders({
       userId,
       cart,
@@ -12,26 +14,27 @@ const createOrderInfo = async (req, res) => {
       country,
       paymentMethod,
       state,
-      subtotal
+      subtotal,
     });
- 
+
     await newOrder.save();
+
     return res.status(201).json({
       success: true,
       message: "Order created successfully",
       order: newOrder,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Order creation failed:", error);
     res
       .status(500)
       .json({ success: false, message: "Server error", error: error.message });
   }
 };
- 
+
 const getAllOrder = async (req, res) => {
   // const allOrder= await Orders.find();
- 
+
   const orders = await Orders.find()
     .populate("userId")
     .populate({
@@ -48,27 +51,27 @@ const getAllOrder = async (req, res) => {
     order: orders,
   });
 };
- 
+
 const updateOrder = async (req, res) => {
   const { orderId } = req.params;
   const { status } = req.body;
- 
+
   console.log(req.body);
   console.log(req.params);
- 
+
   try {
     const order = await Orders.findByIdAndUpdate(
       orderId,
       { $set: { status: status } },
       { new: true }
     );
- 
+
     if (!order) {
       return res
         .status(404)
         .json({ success: false, message: "Order not found" });
     }
- 
+
     res.json({ success: true, message: "Order status updated", order });
   } catch (error) {
     console.error(error);
@@ -77,11 +80,11 @@ const updateOrder = async (req, res) => {
       .json({ success: false, message: "Server error", error: error.message });
   }
 };
- 
+
 const getAllOrderByUserId = async (req, res) => {
   const { userId } = req.params;
   console.log(req.params);
- 
+
   try {
     const orders = await Orders.find({ userId }).populate({
       path: "items.productId",
@@ -90,7 +93,7 @@ const getAllOrderByUserId = async (req, res) => {
         model: "Category",
       },
     });
- 
+
     return res.status(200).json({ success: true, orders });
   } catch (error) {
     console.error(error);
@@ -99,7 +102,7 @@ const getAllOrderByUserId = async (req, res) => {
       .json({ success: false, message: "Server error", error: error.message });
   }
 };
- 
+
 module.exports = {
   createOrderInfo,
   getAllOrder,

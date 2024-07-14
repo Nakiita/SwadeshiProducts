@@ -58,6 +58,9 @@ app.use("/api/order", require("./routes/orderRoutes"));
 
 app.use('/api/review', require('./routes/reviewRoutes'));
 
+app.use('/api/chat', require('./routes/chatRoutes'));
+
+app.use('/api/message', require('./routes/messageRoutes'));
 
 
 // defining port

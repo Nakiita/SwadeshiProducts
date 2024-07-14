@@ -13,4 +13,5 @@ router.put("/password/reset/:token", userController.resetPassword);
 
 router.put("/update_user/:id", userController.updateUser);
 // exporting
+router.get("/:id", userController.getUser);
 module.exports = router;
