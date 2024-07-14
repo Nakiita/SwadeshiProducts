@@ -37,6 +37,13 @@ const OrderConfirmation = () => {
     setSubtotal(total);
   };
 
+  const handleOrder =  () =>{
+    navigate('/order-history');
+  }
+  const handleshopping = () => {
+    navigate ('/');
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center mt-24">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -94,23 +101,23 @@ const OrderConfirmation = () => {
             <p className="mb-1 ">Discount </p>
             <p>Rs. 0 </p>
           </div>
-          <div className="flex justify-between text-gray-400">
-            <p className="mb-1 ">Extra Charge </p>
-            <p>Rs. 100 </p>
-          </div>
 
           <hr className="my-3" />
           <div className="flex justify-between">
             <p>Grand Total </p>
-            <p className="font-bold"> Rs. {subtotal + 200}</p>
+            <p className="font-bold"> Rs. {subtotal + 100}</p>
           </div>
         </div>
 
-        <div className="flex justify-center space-x-4">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+        <div className="flex justify-between space-x-4">
+          <button
+          onClick={handleOrder}
+           className="text-black py-2 px-4 rounded border">
             Order History
           </button>
-          <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+          <button 
+          onClick={handleshopping}  
+          className="bg-black text-white py-2 px-4 rounded hover:bg-black">
             Continue Shopping
           </button>
         </div>

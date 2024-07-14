@@ -27,6 +27,7 @@ import OrderConfirmation from "./pages/user/OrderConfirmation";
 import OrdersPage from "./pages/user/OrderHistory";
 import OrderHistory from "./pages/user/OrderHistory";
 import Review from "./pages/user/Review";
+import ChatBox from "./pages/user/Chat";
 
 const App = () => {
   return (
@@ -68,6 +69,7 @@ const App = () => {
           <Route path="/order-history" element={<OrderHistory />} />
 
           <Route path="/review" element={<Review/>} />
+          <Route path="/chat" element = {<ChatBox/>}/>
         </Routes>
         <Footer />
       </Router>

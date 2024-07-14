@@ -45,6 +45,7 @@ const OrderHistory = () => {
             key={order._id}
             product={order.product}
             user = {user}
+            quantity = {order.quantity}
             subtotal={subtotal}
           />
         ))}

@@ -13,11 +13,13 @@ export const Banner = () => {
           alt="Made in Nepal"
         />
       </div>
-      <img
-        src="../assets/images/ssss.png"
-        className="w-[51.5rem] object-cover rounded-lg"
-        alt="Swadeshi Collection"
-      />
+      <a href="/categories">
+        <img
+          src="../assets/images/HomePage.png"
+          className="w-[65.5rem] object-cover rounded-lg mt-3"
+          alt="Swadeshi Collection"
+        />
+      </a>
     </div>
   );
 };

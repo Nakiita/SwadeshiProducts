@@ -102,7 +102,7 @@ const AddToCart = ({ setCheckoutSuccess }) => {
                           alt={item.product?.productName}
                           className="w-10 h-10 rounded-full object-cover mr-4"
                         />
-                        <p className="w-52">
+                        <p className="w-72">
                           {item.product?.productName || "N/A"}
                         </p>
                       </td>
@@ -140,18 +140,18 @@ const AddToCart = ({ setCheckoutSuccess }) => {
             <h2 className="text-2xl font-semibold mb-4">Cart Total</h2>
             <table className="w-full text-sm text-left text-gray-500 mb-4">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th className="py-3 px-6">Product Name</th>
-                  <th className="py-3 px-6">Price</th>
+                <tr >
+                  <th className="py-3 px-6 ">Product Name</th>
+                  <th className="w-1/2 text-right py-3 px-6">Price</th>
                 </tr>
               </thead>
               <tbody className="bg-white border-b hover:bg-gray-100">
                 {carts.map((item) => (
                   <tr key={item._id}>
-                    <td className="py-4 px-6 w-24">
+                    <td className="w-32 py-4">
                       {item.product?.productName || "N/A"}
                     </td>
-                    <td className="py-4 px-6 ">
+                    <td className="py-4 px-6 text-right">
                       Rs {item.product?.productPrice || "N/A"}
                     </td>
                   </tr>

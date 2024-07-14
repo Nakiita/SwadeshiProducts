@@ -69,6 +69,9 @@ const HomePage = () => {
       : name;
   };
 
+  const handleProductClick = (id) => {
+    navigate(`/product-description/${id}`)
+  }
   return (
     <>
       <Banner />
@@ -79,7 +82,8 @@ const HomePage = () => {
         {products.length > 0 ? (
           products.slice(0, 3).map((product, index) => (
             <div
-              key={index}
+              key={product._id || index}
+              onClick={() => handleProductClick(product._id)}
               className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300 rounded-lg overflow-hidden"
             >
               <img
