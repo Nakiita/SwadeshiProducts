@@ -70,6 +70,9 @@ export const deleteCategoryApi = (id) =>
 export const updateUserApi = (id, formData) =>
   Api.put(`/api/user/update_user/${id}`, formData, config);
 
+export const getUserApi = (id) =>
+  Api.get(`/api/user/${id}`,config)
+
 export const createCartApi = (data) => Api.post("/api/cart/create_cart", data);
 export const getCartApi = (id) => Api.get(`/api/cart/get_cart/${id}`);
 export const deleteCartApi = (userId, productId) =>
@@ -82,5 +85,29 @@ export const getOrdersByuserId = (userId) =>
 export const updateOrdersApi = (orderId, formData) =>
   Api.put(`/api/order/update_order/${orderId}/status`, formData, config);
 
+// API to create a new chat session
+export const createChatApi = (data) => {
+   return Api.post(`/api/chat/`, data);
+};
+
+// API to fetch chats for a user
+export const getUserChatsApi = (userId) => {
+    Api.get(`/api/chat/${userId}`);
+};
+
+// API to find a chat between two users
+export const findChatApi = (firstId, secondId) => {
+    Api.get(`/api/chat/find/${firstId}/${secondId}`);
+};
+
+// API to create messages
+export const createMessagesApi = (data) => {
+    Api.post(`/api/message/`, data);
+};
+
+// API to get messages
+export const getMessagesApi = (chatId) => {
+  return Api.get(`/api/message/${chatId}`);
+};
 
 export const createReviewApi = (formData) => Api.post(`/api/review/create`, formData);

@@ -1,64 +1,89 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import getUser from "../../utils/getUser";
+import { createChatApi } from "../../apis/Api";
+import ChatComponent from "../../components/ChatComponent";
 
-const messages = [
-  { id: 1, text: "Do you have any other color option?", sender: "user" },
-  { id: 2, text: "Yes!!", sender: "other" },
-  {
-    id: 3,
-    text: "We have color options. Which color do you want?",
-    sender: "other",
-  },
-  { id: 4, text: "Baby Pink", sender: "user" },
-  {
-    id: 5,
-    text: "Can you show me the real picture of product?",
-    sender: "user",
-  },
-  { id: 6, text: "Alright", sender: "other" },
-];
+const Chat = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [chatData, setChatData] = useState("");
+  const [chatInitialized, setChatInitialized] = useState(false);
+  const dropdownRef = useRef(null);
+  const user = getUser();
 
-const ChatBox = () => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchChatData = async () => {
+      try {
+        const senderId = user._id;
+        const receiverId = "669405b47f6e47504022ba99";
+        const data = { senderId, receiverId };
+        const response = await createChatApi(data);
+        setChatData(response);
+        setChatInitialized(true);
+        
+      } catch (error) {
+        console.error("Error creating chat session:", error);
+      }
+    };
+
+    if (isOpen && !chatInitialized) {
+      fetchChatData();
+    }
+  }, [isOpen, user, chatInitialized]);
+  
+
+  const toggleChat = async () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <div className="flex flex-col h-screen mt-24">
-      <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300">
-        <h1 className="text-lg font-semibold">Handicrafts Nepal</h1>
-        <span className="text-sm text-gray-500">Active 20m ago</span>
-      </div>
-      <div className="flex-1 p-4 overflow-y-auto">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${
-              message.sender === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
-            <div
-              className={`max-w-xs px-4 py-2 my-1 rounded-lg ${
-                message.sender === "user"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-black"
-              }`}
-            >
-              {message.text}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="p-4 flex items-center">
-        <input
-          type="text"
-          placeholder="Enter your message"
-          className="w-full p-2 border rounded-l-lg focus:outline-none focus:border-blue-500"
-        />
-        <button
-          type="button"
-          className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
+    <div>
+      <button
+        className="fixed bottom-4 right-4 inline-flex items-center justify-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50 border rounded-full w-16 h-16 bg-black hover:bg-gray-700 m-0 cursor-pointer border-gray-200 bg-none p-0 normal-case leading-5 hover:text-gray-900"
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        data-state="closed"
+        onClick={toggleChat}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="40"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-white block border-gray-200 align-middle"
         >
-          Send
-        </button>
-      </div>
+          <path
+            d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"
+            className="border-gray-200"
+          ></path>
+        </svg>
+      </button>
+      <ChatComponent
+        isOpen={isOpen}
+        dropdownRef={dropdownRef}
+        user={user}
+        chatData={chatData}
+      />
     </div>
   );
 };
 
-export default ChatBox;
+export default Chat;

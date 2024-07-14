@@ -7,7 +7,7 @@ import {
   getProductsApi,
 } from "../../apis/Api";
 import { toast } from "react-toastify";
-import Sidebar from "../../components/Sidebar";
+// import Sidebar from "../../components/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -99,17 +99,17 @@ const AdminDashboard = () => {
       : [];
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 mt-24">
       <div className="flex flex-wrap">
-        <div className="w-full lg:w-1/5">
-          <Sidebar />
+        <div className="w-full">
+          {/* <Sidebar /> */}
         </div>
-        <div className="w-full lg:w-4/5">
+        <div className="w-full">
           <div className="p-6">
             <h3 className="text-2xl font-semibold mb-4">Products</h3>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="mb-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="mb-6 bg-black hover:bg-black text-white font-bold py-2 px-4 rounded"
             >
               Add Product
             </button>

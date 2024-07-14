@@ -1,26 +1,37 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link,  } from "react-router-dom";
+import getUser from "../utils/getUser";
+
 
 const UserAvatar = ({ user, handleLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const fetchedUser = getUser();
+  const [previewImage, setPreviewImage] = useState(
+    fetchedUser.profilePicture || null
+  );
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+useEffect(() => {
+  if (fetchedUser.profilePicture) {
+    setPreviewImage(fetchedUser.profilePicture);
+  }
+}, [fetchedUser.profilePicture]);
 
   return (
-    <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
+    <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative mr-6">
       <button
         type="button"
-        className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+        className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-30"
         id="user-menu-button"
         aria-expanded={dropdownOpen}
         onClick={toggleDropdown}
       >
-        <span className="sr-only">Open user menu</span>
+        <span className="sr-only ">Open user menu</span>
         <img
           className="w-8 h-8 rounded-full"
-          src="/docs/images/people/profile-picture-3.jpg"
+          src={previewImage}
           alt="user photo"
         />
       </button>
@@ -41,7 +52,7 @@ const UserAvatar = ({ user, handleLogout }) => {
             <li>
               <Link
                 to="/user"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 "
               >
                 Profile
               </Link>

@@ -16,7 +16,7 @@ export const Banner = () => {
       <a href="/categories">
         <img
           src="../assets/images/HomePage.png"
-          className="w-[65.5rem] object-cover rounded-lg mt-3"
+          className="w-[77.5rem] object-cover rounded-lg"
           alt="Swadeshi Collection"
         />
       </a>

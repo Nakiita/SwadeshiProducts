@@ -81,7 +81,7 @@ const UserProfile = () => {
             className="hidden"
             accept="image/*"
           />
-          {previewImage && (
+          
             <div
               className="relative"
               onMouseEnter={() => setIsHovering(true)}
@@ -99,7 +99,7 @@ const UserProfile = () => {
                 </div>
               )}
             </div>
-          )}
+          
         </div>
         <form onSubmit={handleUpdate}>
           <div className="mb-4">
