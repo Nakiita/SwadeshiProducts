@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { createMessagesApi, getMessagesApi } from "../apis/Api";
 import getUser from "../utils/getUser";
 
-
 const AdminChatBox = ({
   chat,
   currentUser,
@@ -10,8 +9,8 @@ const AdminChatBox = ({
   receivedMessage,
 }) => {
   const [message, setMessage] = useState("");
-  const user  = getUser();
-  const [userData, setUserData] = useState(null);
+  const user = getUser();
+  const [userData, setUserData] = useState("");
   const senderId = chat?.members?.find((id) => id !== currentUser);
   const [messages, setMessages] = useState([]);
   const scroll = useRef();
@@ -84,6 +83,7 @@ const AdminChatBox = ({
     return new Date(dateString).toLocaleTimeString([], options);
   };
 
+  console.log(userData);
   return (
     <>
       {chat ? (
@@ -94,7 +94,7 @@ const AdminChatBox = ({
             </h1>
             <span className="text-sm text-gray-500">Active 20m ago</span>
           </div>
-          <div className="flex-1 p-4 overflow-y-auto h-[40rem]">
+          <div className="flex-1 p-4 overflow-y-auto h-[28.5rem]">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -107,7 +107,7 @@ const AdminChatBox = ({
                 <div
                   className={`max-w-xs px-4 py-2 my-1 rounded-lg ${
                     message?.senderId === currentUser
-                      ? "bg-blue-500 text-white"
+                      ? "bg-black text-white"
                       : "bg-gray-200 text-black"
                   }`}
                 >

@@ -71,7 +71,7 @@ const App = () => {
 
           <Route path="/review" element={<Review/>} />
           <Route path="/chat" element = {<ChatBox/>}/>
-          <Route path="/admin-chat" element = {<AdminChat/>}/>
+          <Route path="/chats" element = {<AdminChat/>}/>
         </Routes>
         <Footer />
       </Router>

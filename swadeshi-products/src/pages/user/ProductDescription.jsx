@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import ProductImages from "../../components/ProductImages";
 import { toast } from "react-toastify";
+import Chat from "./Chat";
 
 const ProductDescription = () => {
   const { id } = useParams();
@@ -76,6 +77,8 @@ const ProductDescription = () => {
 
   return (
     <>
+
+    <Chat/>
       <section className="py-8 bg-white md:py-16 antialiased mt-14">
         <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
