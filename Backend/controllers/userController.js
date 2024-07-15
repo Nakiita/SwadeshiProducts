@@ -237,7 +237,7 @@ const updateUser = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error); 
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -283,9 +283,10 @@ const resetPassword = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.params.id;
+
   try {
-    const user = await User.findById(userId);
+    const user = await Users.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -307,5 +308,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updateUser,
-  getUser
+  getUser,
 };
