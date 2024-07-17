@@ -29,6 +29,7 @@ import OrderHistory from "./pages/user/OrderHistory";
 import Review from "./pages/user/Review";
 import ChatBox from "./pages/user/Chat";
 import AdminChat from "./pages/admin/AdminChat";
+import SearchResults from "./components/SearchResult";
 
 const App = () => {
   return (
@@ -72,6 +73,7 @@ const App = () => {
           <Route path="/review" element={<Review/>} />
           <Route path="/chat" element = {<ChatBox/>}/>
           <Route path="/chats" element = {<AdminChat/>}/>
+          <Route path = "/search" element={<SearchResults/>} />
         </Routes>
         <Footer />
       </Router>

@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { registerApi } from "../apis/Api";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -11,23 +13,37 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
   const [errors, setErrors] = useState({});
 
+  const clearError = (field) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+  };
+
   const changeUserName = (e) => {
     setUserName(e.target.value);
+    clearError("UserName");
   };
   const changeEmail = (e) => {
     setEmail(e.target.value);
+    clearError("email");
   };
   const changePhoneNumber = (e) => {
     setPhoneNumber(e.target.value);
+    clearError("phoneNumber");
   };
   const changePassword = (e) => {
     setPassword(e.target.value);
+    clearError("password");
   };
   const changeconfirmPassword = (e) => {
     setconfirmPassword(e.target.value);
+    clearError("confirmPassword");
   };
 
   // Define the Zod validation schema
@@ -42,6 +58,19 @@ const Register = () => {
         .min(1, { message: "Confirm Password is required" }),
     })
     .superRefine((data, ctx) => {
+      if (data.UserName.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Name is required",
+          path: ["UserName"],
+        });
+      } else if (!/^[A-Za-z\s]+$/.test(data.UserName)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Name cannot contain special characters or numbers",
+          path: ["UserName"],
+        });
+      }
       if (data.email.length === 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -152,11 +181,11 @@ const Register = () => {
 
         <div className="w-full lg:w-1/2 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
-            <h1 className="text-2xl font-semibold mb-6 text-black text-center">
+            <h1 className="text-xl font-semibold mb-6 text-black text-center">
               Welcome to Swadeshi Family!!
             </h1>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-1.5">
               <div>
                 <label
                   htmlFor="username"
@@ -223,18 +252,29 @@ const Register = () => {
                 >
                   Password
                 </label>
-                <input
-                  onChange={changePassword}
-                  value={password}
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
+                <div className="relative">
+                  <input
+                    onChange={changePassword}
+                    value={password}
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                  />
+                  <button
+                    type="button"
+                    onClick={toggleShowPassword}
+                    className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5"
+                  >
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1">{errors.password}</p>
                 )}
+
               </div>
+
               <div>
                 <label
                   htmlFor="confirmPassword"
@@ -242,20 +282,30 @@ const Register = () => {
                 >
                   Confirm Password
                 </label>
-                <input
-                  onChange={changeconfirmPassword}
-                  value={confirmPassword}
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                />
+                <div className="relative">
+                  <input
+                    onChange={changeconfirmPassword}
+                    value={confirmPassword}
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                  />
+                  <button
+                    type="button"
+                    onClick={toggleShowConfirmPassword}
+                    className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5"
+                  >
+                    <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
+                  </button>
+                </div>
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.confirmPassword}
                   </p>
                 )}
               </div>
+
               <div>
                 <button
                   type="submit"

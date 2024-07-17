@@ -3,20 +3,34 @@ import { loginApi } from "../apis/Api";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import { z } from "zod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
 
+  const clearError = (field) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+
   const changeEmail = (e) => {
     setEmail(e.target.value);
+    clearError("email");
   };
 
   const changePassword = (e) => {
     setPassword(e.target.value);
+    clearError("password");
   };
 
   // Define the Zod validation schema
@@ -94,6 +108,7 @@ const Login = () => {
               </label>
               <input
                 onChange={changeEmail}
+                value={email}
                 type="text"
                 id="email"
                 name="email"
@@ -110,13 +125,23 @@ const Login = () => {
               >
                 Password
               </label>
-              <input
-                onChange={changePassword}
-                type="password"
-                id="password"
-                name="password"
-                className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-              />
+              <div className="relative">
+                <input
+                  onChange={changePassword}
+                  value={password}
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                />
+                <button
+                  type="button"
+                  onClick={toggleShowPassword}
+                  className="absolute inset-y-0 right-0 px-3 flex items-center text-sm leading-5"
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}

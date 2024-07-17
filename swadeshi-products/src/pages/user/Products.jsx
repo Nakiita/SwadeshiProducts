@@ -71,10 +71,10 @@ const Products = () => {
   };
 
   return (
-    <div className="container mt-24">
-      <div className="flex flex-col">
+    <div className="container mt-24 ml-14">
+      <div className="flex flex-col ml-12">
         <h3 className="text-xl font-semibold ">PRODUCTS</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
           {products.length > 0 ? (
             products.map((product, index) => (
               <div
@@ -85,7 +85,7 @@ const Products = () => {
                 <img
                   src={product.productImageUrls[0] || product.productImageUrls}
                   alt={product.productName}
-                  className="h-72 w-full object-cover"
+                  className="h-72 object-cover w-full gap-12"
                 />
                 <div className="p-2">
                   <h5 className="text-xl font-semibold mb-2 truncate">

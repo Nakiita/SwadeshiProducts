@@ -111,3 +111,7 @@ export const getMessagesApi = (chatId) => {
 
 export const createReviewApi = (formData) =>
   Api.post(`/api/review/create`, formData);
+
+export const searchApi = (query) => {
+  return Api.get(`/api/product/search`, { params: { q: query } });
+};

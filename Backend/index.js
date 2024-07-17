@@ -62,7 +62,6 @@ app.use('/api/chat', require('./routes/chatRoutes'));
 
 app.use('/api/message', require('./routes/messageRoutes'));
 
-
 // defining port
 const PORT = process.env.PORT;
 // run the server

@@ -63,21 +63,21 @@ const Categories = require("../model/categoriesModel");
 
 // }
 
-const uploadsDir = path.join(__dirname, "uploads");
+// const uploadsDir = path.join(__dirname, "uploads");
 
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+// if (!fs.existsSync(uploadsDir)) {
+//   fs.mkdirSync(uploadsDir, { recursive: true });
+// }
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   },
+// });
+// const upload = multer({ storage: storage });
 
 const createProduct = async (req, res) => {
 
@@ -442,15 +442,42 @@ const getPagination = async (req, res) => {
   }
 };
 
+const searchProduct = async (req, res) => {
+  try {
+    const query = req.query.q;
+    const regex = new RegExp(query, 'i');
+
+    const products = await Products.find({
+      "$or": [
+        { productName: regex },
+        { categoryId: regex }
+      ]
+    });
+
+    res.json({
+      data: products,
+      message: "Search Product list",
+      error: false,
+      success: true
+    });
+  } catch (err) {
+    res.json({
+      message: err.message || err,
+      error: true,
+      success: false
+    });
+  }
+};
+
 module.exports = {
   createProduct,
   getProducts,
   getAllProducts,
-  upload,
   getSingleProduct,
   updateProduct,
   deleteProduct,
   createOrder,
   getOrders,
   getPagination,
+  searchProduct,
 };

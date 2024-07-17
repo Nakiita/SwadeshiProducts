@@ -37,14 +37,14 @@ useEffect(() => {
       </button>
       {dropdownOpen && (
         <div
-          className="z-50 absolute right-0 top-10 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+          className="z-50 absolute right-0 top-10 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow"
           id="user-dropdown"
         >
           <div className="px-4 py-3">
-            <span className="block text-sm text-gray-900 dark:text-white">
+            <span className="block text-sm text-gray-900 ">
               {user.UserName}
             </span>
-            <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+            <span className="block text-sm text-gray-500 truncate ">
               {user.email}
             </span>
           </div>
@@ -52,7 +52,7 @@ useEffect(() => {
             <li>
               <Link
                 to="/user"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 "
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
               >
                 Profile
               </Link>
@@ -60,7 +60,7 @@ useEffect(() => {
             <li>
               <Link
                 to="/order-history"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
               >
                 Order History
               </Link>
@@ -68,7 +68,7 @@ useEffect(() => {
             <li>
               <button
                 onClick={handleLogout}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
               >
                 Logout
               </button>
@@ -79,7 +79,7 @@ useEffect(() => {
       <button
         data-collapse-toggle="navbar-user"
         type="button"
-        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
         aria-controls="navbar-user"
         aria-expanded="false"
       >

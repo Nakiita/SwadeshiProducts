@@ -26,4 +26,6 @@ router.get("/get_orders", productController.getOrders);
 // pagination route
 router.get("/get_pagination", productController.getPagination);
 
+router.get("/search", productController.searchProduct);
 module.exports = router;
+ 
