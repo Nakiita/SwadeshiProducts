@@ -62,7 +62,7 @@ const ChatComponent = ({ isOpen, dropdownRef, user, chatData }) => {
         ref={dropdownRef}
         className="fixed bottom-[calc(4rem+1.5rem)] right-0 mr-4 bg-white p-6 rounded-lg border border-[#e5e7eb] w-[440px] h-[634px]"
       >
-        <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col justify-between h-[450px] mt-36">
           <div>
             <div className="flex flex-col space-y-1.5 pb-6">
               <h2 className="font-semibold text-lg tracking-tight">
@@ -70,7 +70,7 @@ const ChatComponent = ({ isOpen, dropdownRef, user, chatData }) => {
               </h2>
             </div>
 
-            <div className="pr-4 h-[480px] overflow-y-auto">
+            <div className="pr-4 overflow-y-auto">
               {messages.map((msg, index) => (
                 <div
                   key={index}

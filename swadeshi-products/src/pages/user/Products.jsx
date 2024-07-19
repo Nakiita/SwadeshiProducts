@@ -71,7 +71,7 @@ const Products = () => {
   };
 
   return (
-    <div className="container mt-32">
+    <div className="container mt-24">
       <div className="flex flex-col">
         <h3 className="text-xl font-semibold ">PRODUCTS</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">

@@ -1,7 +1,6 @@
 const cloudinary = require("cloudinary");
 const Products = require("../model/productModel");
 const Orders = require("../model/orderModel");
-const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const Categories = require("../model/categoriesModel");
